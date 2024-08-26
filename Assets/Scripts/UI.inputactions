@@ -1,0 +1,94 @@
+{
+    "name": "UI",
+    "maps": [
+        {
+            "name": "UIPlayer",
+            "id": "b34d42da-c271-4f5e-a64e-d3daf1dfc32e",
+            "actions": [
+                {
+                    "name": "ToggleTeamSelector",
+                    "type": "Button",
+                    "id": "87a66ca6-148b-405a-9740-84d7d86f3a44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleScoreboard",
+                    "type": "Button",
+                    "id": "c7ed7c88-0c2b-403e-9104-2c1afa7b2306",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UILeftClick",
+                    "type": "Button",
+                    "id": "1fd06773-d3bd-481b-a900-36dbf2eaad26",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UIRightClick",
+                    "type": "Button",
+                    "id": "16a68b3e-4690-4ccf-96f4-3f903388a819",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2be09378-66a0-4302-8ea4-ad44b81720b6",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleTeamSelector",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2c8a17e-ce91-4555-9447-805b8b2114f6",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleScoreboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc56d572-3676-44b9-aec6-c10f604654fb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UILeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5a46545e-b442-489a-a3c6-aeda48c1b3cc",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UIRightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

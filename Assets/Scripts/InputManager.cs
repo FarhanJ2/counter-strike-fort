@@ -4,6 +4,7 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
     public PlayerControls PlayerControls;
+    public UI UI;
 
     private void Awake()
     {
@@ -11,6 +12,7 @@ public class InputManager : MonoBehaviour
         {
             Instance = this;
             PlayerControls = new PlayerControls();
+            UI = new UI();
         }
         else
         {
@@ -21,10 +23,12 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         PlayerControls.Enable();
+        UI.Enable();
     }
 
     private void OnDisable()
     {
         PlayerControls.Disable();
+        UI.Disable();
     }
 }
