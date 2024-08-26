@@ -1,10 +1,11 @@
+using System.ComponentModel.Design;
 using UnityEngine;
 
 public class UIPlayerGame : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject scoreBoardUI;
-    [SerializeField] private GameObject teamSelectUI;
+    [SerializeField] private GameObject teamSelectorUI;
 
     private void OnEnable()
     {
@@ -26,5 +27,11 @@ public class UIPlayerGame : MonoBehaviour
                 Cursor.visible = true;
             }
         };
+        InputManager.Instance.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
+    }
+
+    public void ToggleTeamSelector()
+    {
+        teamSelectorUI.SetActive(!teamSelectorUI.activeSelf);
     }
 }

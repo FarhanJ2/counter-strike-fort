@@ -6,15 +6,6 @@
             "id": "b34d42da-c271-4f5e-a64e-d3daf1dfc32e",
             "actions": [
                 {
-                    "name": "ToggleTeamSelector",
-                    "type": "Button",
-                    "id": "87a66ca6-148b-405a-9740-84d7d86f3a44",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "ToggleScoreboard",
                     "type": "Button",
                     "id": "c7ed7c88-0c2b-403e-9104-2c1afa7b2306",
@@ -45,17 +36,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "2be09378-66a0-4302-8ea4-ad44b81720b6",
-                    "path": "<Keyboard>/m",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleTeamSelector",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d2c8a17e-ce91-4555-9447-805b8b2114f6",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
@@ -84,6 +64,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "UIRightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UIGlobal",
+            "id": "e6ce54e8-58d2-400b-926a-dce35f3263b3",
+            "actions": [
+                {
+                    "name": "ToggleTeamSelector",
+                    "type": "Button",
+                    "id": "a3bf7e88-7fb8-464f-95d3-85e99be76550",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "97747de8-97fe-415f-8b68-c2131401dc33",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleTeamSelector",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

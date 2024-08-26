@@ -28,15 +28,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
             ""id"": ""b34d42da-c271-4f5e-a64e-d3daf1dfc32e"",
             ""actions"": [
                 {
-                    ""name"": ""ToggleTeamSelector"",
-                    ""type"": ""Button"",
-                    ""id"": ""87a66ca6-148b-405a-9740-84d7d86f3a44"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""ToggleScoreboard"",
                     ""type"": ""Button"",
                     ""id"": ""c7ed7c88-0c2b-403e-9104-2c1afa7b2306"",
@@ -65,17 +56,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""2be09378-66a0-4302-8ea4-ad44b81720b6"",
-                    ""path"": ""<Keyboard>/m"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleTeamSelector"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""d2c8a17e-ce91-4555-9447-805b8b2114f6"",
@@ -110,16 +90,46 @@ public partial class @UI: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIGlobal"",
+            ""id"": ""e6ce54e8-58d2-400b-926a-dce35f3263b3"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleTeamSelector"",
+                    ""type"": ""Button"",
+                    ""id"": ""a3bf7e88-7fb8-464f-95d3-85e99be76550"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""97747de8-97fe-415f-8b68-c2131401dc33"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleTeamSelector"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // UIPlayer
         m_UIPlayer = asset.FindActionMap("UIPlayer", throwIfNotFound: true);
-        m_UIPlayer_ToggleTeamSelector = m_UIPlayer.FindAction("ToggleTeamSelector", throwIfNotFound: true);
         m_UIPlayer_ToggleScoreboard = m_UIPlayer.FindAction("ToggleScoreboard", throwIfNotFound: true);
         m_UIPlayer_UILeftClick = m_UIPlayer.FindAction("UILeftClick", throwIfNotFound: true);
         m_UIPlayer_UIRightClick = m_UIPlayer.FindAction("UIRightClick", throwIfNotFound: true);
+        // UIGlobal
+        m_UIGlobal = asset.FindActionMap("UIGlobal", throwIfNotFound: true);
+        m_UIGlobal_ToggleTeamSelector = m_UIGlobal.FindAction("ToggleTeamSelector", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -181,7 +191,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
     // UIPlayer
     private readonly InputActionMap m_UIPlayer;
     private List<IUIPlayerActions> m_UIPlayerActionsCallbackInterfaces = new List<IUIPlayerActions>();
-    private readonly InputAction m_UIPlayer_ToggleTeamSelector;
     private readonly InputAction m_UIPlayer_ToggleScoreboard;
     private readonly InputAction m_UIPlayer_UILeftClick;
     private readonly InputAction m_UIPlayer_UIRightClick;
@@ -189,7 +198,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
     {
         private @UI m_Wrapper;
         public UIPlayerActions(@UI wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleTeamSelector => m_Wrapper.m_UIPlayer_ToggleTeamSelector;
         public InputAction @ToggleScoreboard => m_Wrapper.m_UIPlayer_ToggleScoreboard;
         public InputAction @UILeftClick => m_Wrapper.m_UIPlayer_UILeftClick;
         public InputAction @UIRightClick => m_Wrapper.m_UIPlayer_UIRightClick;
@@ -202,9 +210,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIPlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIPlayerActionsCallbackInterfaces.Add(instance);
-            @ToggleTeamSelector.started += instance.OnToggleTeamSelector;
-            @ToggleTeamSelector.performed += instance.OnToggleTeamSelector;
-            @ToggleTeamSelector.canceled += instance.OnToggleTeamSelector;
             @ToggleScoreboard.started += instance.OnToggleScoreboard;
             @ToggleScoreboard.performed += instance.OnToggleScoreboard;
             @ToggleScoreboard.canceled += instance.OnToggleScoreboard;
@@ -218,9 +223,6 @@ public partial class @UI: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IUIPlayerActions instance)
         {
-            @ToggleTeamSelector.started -= instance.OnToggleTeamSelector;
-            @ToggleTeamSelector.performed -= instance.OnToggleTeamSelector;
-            @ToggleTeamSelector.canceled -= instance.OnToggleTeamSelector;
             @ToggleScoreboard.started -= instance.OnToggleScoreboard;
             @ToggleScoreboard.performed -= instance.OnToggleScoreboard;
             @ToggleScoreboard.canceled -= instance.OnToggleScoreboard;
@@ -247,11 +249,60 @@ public partial class @UI: IInputActionCollection2, IDisposable
         }
     }
     public UIPlayerActions @UIPlayer => new UIPlayerActions(this);
+
+    // UIGlobal
+    private readonly InputActionMap m_UIGlobal;
+    private List<IUIGlobalActions> m_UIGlobalActionsCallbackInterfaces = new List<IUIGlobalActions>();
+    private readonly InputAction m_UIGlobal_ToggleTeamSelector;
+    public struct UIGlobalActions
+    {
+        private @UI m_Wrapper;
+        public UIGlobalActions(@UI wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleTeamSelector => m_Wrapper.m_UIGlobal_ToggleTeamSelector;
+        public InputActionMap Get() { return m_Wrapper.m_UIGlobal; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIGlobalActions set) { return set.Get(); }
+        public void AddCallbacks(IUIGlobalActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIGlobalActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIGlobalActionsCallbackInterfaces.Add(instance);
+            @ToggleTeamSelector.started += instance.OnToggleTeamSelector;
+            @ToggleTeamSelector.performed += instance.OnToggleTeamSelector;
+            @ToggleTeamSelector.canceled += instance.OnToggleTeamSelector;
+        }
+
+        private void UnregisterCallbacks(IUIGlobalActions instance)
+        {
+            @ToggleTeamSelector.started -= instance.OnToggleTeamSelector;
+            @ToggleTeamSelector.performed -= instance.OnToggleTeamSelector;
+            @ToggleTeamSelector.canceled -= instance.OnToggleTeamSelector;
+        }
+
+        public void RemoveCallbacks(IUIGlobalActions instance)
+        {
+            if (m_Wrapper.m_UIGlobalActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIGlobalActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIGlobalActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIGlobalActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIGlobalActions @UIGlobal => new UIGlobalActions(this);
     public interface IUIPlayerActions
     {
-        void OnToggleTeamSelector(InputAction.CallbackContext context);
         void OnToggleScoreboard(InputAction.CallbackContext context);
         void OnUILeftClick(InputAction.CallbackContext context);
         void OnUIRightClick(InputAction.CallbackContext context);
+    }
+    public interface IUIGlobalActions
+    {
+        void OnToggleTeamSelector(InputAction.CallbackContext context);
     }
 }
