@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     [SerializeField] private int startingHealth = 100;
     private PlayerBridge _bridge;
 
+    // events
+    public static event Action<Player> OnHealthChanged; // used to update amount of cts and ts alive
+    
     private void Awake()
     {
         PlayerName = "Player " + Random.Range(0, 1000);
@@ -53,7 +56,8 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         playerHealth -= damage;
-
+        OnHealthChanged?.Invoke(this);
+        
         if (playerHealth <= 0)
         {
             playerHealth = 0;
@@ -75,7 +79,10 @@ public class Player : MonoBehaviour
     {
         PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T; // ct 0, t 1 for entire program
         playerUI.ToggleTeamSelector();
-    
+        
+        
+        // tp player to a spawn
+        gameObject.transform.position = SpawnManager.Instance.GetFreeSpawn(PlayerTeam);
         
         // document the player models later
         if (PlayerTeam == PlayerTeams.CT)
@@ -90,6 +97,8 @@ public class Player : MonoBehaviour
         _bridge.cameraHolder.SetActive(true);
         _bridge.playerMovement.canMove = true;
         _bridge.playerCamScript.mouseEnabled = true;
+        
+        OnHealthChanged?.Invoke(this);
     }
 }
 

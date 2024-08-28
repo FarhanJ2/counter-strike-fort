@@ -3,9 +3,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class Scoreboard : MonoBehaviour
+public class ScoreboardManager : MonoBehaviour
 {
-    public static Scoreboard Instance { get; private set; }
+    public static ScoreboardManager Instance { get; private set; }
     
     private void Awake()
     {

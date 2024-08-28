@@ -21,7 +21,6 @@ public class UIScoreboard : MonoBehaviour
     private void Start()
     {
         InitializeSlots();
-        UpdateScoreboardUI();
     }
 
     private void Update()
@@ -72,7 +71,7 @@ public class UIScoreboard : MonoBehaviour
             slot.ClearInfo();
         }
 
-        var scoreboardEntries = Scoreboard.Instance.GetScoreboard();
+        var scoreboardEntries = ScoreboardManager.Instance.GetScoreboard();
 
         foreach (var entry in scoreboardEntries)
         {
