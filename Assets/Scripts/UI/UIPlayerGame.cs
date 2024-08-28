@@ -57,6 +57,8 @@ public class UIPlayerGame : MonoBehaviour
         };
         _bridge.InputManager.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
         _bridge.InputManager.UI.UIPlayer.ToggleBuyMenu.started += _ => ToggleBuyMenu();
+
+        Buyzone.OnExitBuyzone += ToggleBuyMenu;
     }
 
     public void ToggleTeamSelector()
@@ -67,11 +69,21 @@ public class UIPlayerGame : MonoBehaviour
 
     private void ToggleBuyMenu()
     {
-        _bridge.playerCamScript.mouseEnabled = buyMenuUI.activeSelf;
-        LockCursor(buyMenuUI.activeSelf);
-        buyMenuUI.SetActive(!buyMenuUI.activeSelf);
+        if (_bridge.player.InBuyZone)
+        {
+            bool isMenuActive = buyMenuUI.activeSelf;
+            _bridge.playerCamScript.mouseEnabled = isMenuActive;
+            LockCursor(isMenuActive);
+            buyMenuUI.SetActive(!isMenuActive);
+        }
+        else
+        {
+            buyMenuUI.SetActive(false);
+            _bridge.playerCamScript.mouseEnabled = true;
+            LockCursor(true);
+        }
     }
-
+    
     private void LockCursor(bool lockCursor)
     {
         if (lockCursor)

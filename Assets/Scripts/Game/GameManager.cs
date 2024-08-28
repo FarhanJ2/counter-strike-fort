@@ -23,7 +23,17 @@ public class GameManager : MonoBehaviour
     private bool _timerRunning = false;
 
     private int _roundPhase = 0; // 0: Freeze Time, 1: Round Time, 2: Ended
-
+    
+    private static event Action OnMajorEvent; 
+    
+    /// <summary>
+    /// Triggers an event when a significant game event occurs, such as a player death, bomb planted, or bomb exploded.
+    /// </summary>
+    public static void InvokeMajorEvent()
+    {
+        OnMajorEvent?.Invoke();
+    }
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,6 +47,7 @@ public class GameManager : MonoBehaviour
         }
 
         Player.OnHealthChanged += SetPlayerCounts;
+        OnMajorEvent += CheckForRoundWin;
     }
 
     private void OnDisable()
@@ -57,8 +68,7 @@ public class GameManager : MonoBehaviour
         Players = FindObjectsOfType<Player>();
     }
 
-    public void
-        CheckForRoundWin() // run on an event so everytime a player dies bomb planted explodes etc this checks not on update
+    public void CheckForRoundWin() // run on an event so everytime a player dies bomb planted explodes etc this checks not on update
     {
         if (CtPlayersAlive == 0) // CT players are all dead
         {

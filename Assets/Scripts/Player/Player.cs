@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
 
     public PlayerWeapons ownedWeapons = new PlayerWeapons();
     
+    public bool InBuyZone { get; set; }
+    
     public enum PlayerTeams
     {
         CT, T, UNASSIGNED
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour
     private void OnPlayerDeath()
     {
         PlayerDeaths++;
+        GameManager.InvokeMajorEvent();
     }
 
     public void TakeDamage(int damage)
