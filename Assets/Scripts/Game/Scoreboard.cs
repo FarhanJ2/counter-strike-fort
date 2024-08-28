@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using FishNet.Object;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -71,7 +68,7 @@ public class Scoreboard : MonoBehaviour
                 PlayerKills = p.PlayerKills,
                 PlayerDeaths = p.PlayerDeaths,
                 PlayerMoney = p.PlayerMoney,
-                KDRatio = p.PlayerDeaths == 0 ? p.PlayerKills : (float)p.PlayerKills / p.PlayerDeaths,
+                KdRatio = p.PlayerDeaths == 0 ? p.PlayerKills : (float)p.PlayerKills / p.PlayerDeaths,
                 PlayerTeam = p.PlayerTeam
             })
             .ToList();
@@ -85,5 +82,5 @@ public class ScoreboardEntry
     public Player.PlayerTeams PlayerTeam { get; set; }
     public int PlayerKills { get; set; }
     public int PlayerDeaths { get; set; }
-    public float KDRatio { get; set; }
+    public float KdRatio { get; set; }
 }

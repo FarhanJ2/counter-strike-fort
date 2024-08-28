@@ -11,7 +11,7 @@ public class UIElementPlayerHolder : MonoBehaviour
     [SerializeField] private TMP_Text _playerDeaths;
     [SerializeField] private TMP_Text _playerKd;
 
-    private bool isOccupied = false;
+    private bool _isOccupied = false;
 
     public void SetPlayerInfo(string playerName, int playerMoney, int playerKills, int playerDeaths, float playerKd, Sprite playerIcon = null)
     {
@@ -31,7 +31,7 @@ public class UIElementPlayerHolder : MonoBehaviour
             _playerIcon.enabled = false;
         }
 
-        isOccupied = true;
+        _isOccupied = true;
         gameObject.SetActive(true);
     }
 
@@ -45,12 +45,12 @@ public class UIElementPlayerHolder : MonoBehaviour
         _playerIcon.sprite = null;
         _playerIcon.enabled = false;
 
-        isOccupied = false;
+        _isOccupied = false;
         gameObject.SetActive(false);
     }
 
     public bool IsOccupied()
     {
-        return isOccupied;
+        return _isOccupied;
     }
 }

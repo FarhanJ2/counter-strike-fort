@@ -12,9 +12,11 @@ public class UIScoreboard : MonoBehaviour
     [SerializeField] private TMP_Text teamText;
 
     [SerializeField] private Transform ctTeamContainer, tTeamContainer;
-
-    private readonly List<UIElementPlayerHolder> _ctSlots = new List<UIElementPlayerHolder>();
-    private readonly List<UIElementPlayerHolder> _tSlots = new List<UIElementPlayerHolder>();
+    
+    // instead of instantiating on player join just add empty fields for unfilled slots and then get from there
+    
+    [SerializeField] private List<UIElementPlayerHolder> _ctSlots;
+    [SerializeField] private List<UIElementPlayerHolder> _tSlots;
 
     private void Start()
     {
@@ -39,28 +41,28 @@ public class UIScoreboard : MonoBehaviour
 
         int maxPlayersPerTeam = 5;
 
-        for (int i = 0; i < maxPlayersPerTeam; i++)
-        {
-            // CT Slots
-            GameObject ctSlotObj = Instantiate(playerHolderPrefab, ctTeamContainer);
-            UIElementPlayerHolder ctSlot = ctSlotObj.GetComponent<UIElementPlayerHolder>();
-            if (ctSlot == null)
-            {
-                Debug.LogError("Failed to get UIElementPlayerHolder component from CT slot prefab.");
-            }
-            ctSlot.ClearInfo();
-            _ctSlots.Add(ctSlot);
-
-            // T Slots
-            GameObject tSlotObj = Instantiate(playerHolderPrefab, tTeamContainer);
-            UIElementPlayerHolder tSlot = tSlotObj.GetComponent<UIElementPlayerHolder>();
-            if (tSlot == null)
-            {
-                Debug.LogError("Failed to get UIElementPlayerHolder component from T slot prefab.");
-            }
-            tSlot.ClearInfo();
-            _tSlots.Add(tSlot);
-        }
+        // for (int i = 0; i < maxPlayersPerTeam; i++)
+        // {
+        //     // CT Slots
+        //     GameObject ctSlotObj = Instantiate(playerHolderPrefab, ctTeamContainer);
+        //     UIElementPlayerHolder ctSlot = ctSlotObj.GetComponent<UIElementPlayerHolder>();
+        //     if (ctSlot == null)
+        //     {
+        //         Debug.LogError("Failed to get UIElementPlayerHolder component from CT slot prefab.");
+        //     }
+        //     ctSlot.ClearInfo();
+        //     _ctSlots.Add(ctSlot);
+        //
+        //     // T Slots
+        //     GameObject tSlotObj = Instantiate(playerHolderPrefab, tTeamContainer);
+        //     UIElementPlayerHolder tSlot = tSlotObj.GetComponent<UIElementPlayerHolder>();
+        //     if (tSlot == null)
+        //     {
+        //         Debug.LogError("Failed to get UIElementPlayerHolder component from T slot prefab.");
+        //     }
+        //     tSlot.ClearInfo();
+        //     _tSlots.Add(tSlot);
+        // }
 
         Debug.Log("Slots initialized successfully.");
     }
@@ -79,7 +81,7 @@ public class UIScoreboard : MonoBehaviour
             UIElementPlayerHolder slot = GetAvailableSlot(entry.PlayerTeam);
             if (slot != null)
             {
-                slot.SetPlayerInfo(entry.PlayerName, entry.PlayerMoney, entry.PlayerKills, entry.PlayerDeaths, entry.KDRatio);
+                slot.SetPlayerInfo(entry.PlayerName, entry.PlayerMoney, entry.PlayerKills, entry.PlayerDeaths, entry.KdRatio);
             }
         }
     }

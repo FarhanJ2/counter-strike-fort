@@ -67,35 +67,26 @@ public class PlayerMovement : NetworkBehaviour
             if (isGrounded && velocity.y < 0) {
                 velocity.y = -2f;
             }
-            
+
             float x = InputManager.Instance.PlayerControls.Movement.Strafe.ReadValue<float>();
             float z = InputManager.Instance.PlayerControls.Movement.Translation.ReadValue<float>();
 
             Vector3 move = transform.right * x + transform.forward * z;
 
-            if (isGrounded)
-            {
-                if (isSprinting)
-                {
+            if (isGrounded) {
+                if (isSprinting) {
                     speed = Mathf.Lerp(speed, runSpeed, sprintChangingSpeed * Time.deltaTime);
-                }
-                else
-                {
+                } else {
                     speed = Mathf.Lerp(speed, oldSpeed, sprintChangingSpeed * Time.deltaTime);
                 }
-
+            } else {
+                speed = Mathf.Lerp(speed, oldSpeed * 0.1f, sprintChangingSpeed * Time.deltaTime);
             }
-            else
-            {
-                speed = Mathf.Lerp(speed, oldSpeed, sprintChangingSpeed / 2 * Time.deltaTime);
-            }
-
-
-            controller.Move(move * speed * Time.deltaTime);
-
-            velocity.y -= gravity * Time.deltaTime; // this might be the reason the player is going into the ground
             
-            // Debug.Log("Current velocity" + velocity.y);
+            controller.Move(move * speed * Time.deltaTime);
+            velocity.y -= gravity * Time.deltaTime;
+
+            Debug.Log("Current velocity" + velocity.y);
 
             controller.Move(velocity * Time.deltaTime);
 
@@ -103,17 +94,19 @@ public class PlayerMovement : NetworkBehaviour
             mainCamera.fieldOfView = fovEval;
             weaponCamera.fieldOfView = fovEval;
 
-            LadderLogic(move);  
-        } 
+            LadderLogic(move);
+        }
     }
 
+
     private void Jump() {
-        if (isGrounded) {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        if (isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
             speed = Mathf.Lerp(speed, speed - 2, sprintChangingSpeed * 4 * Time.deltaTime);
             airJumps = maxAirJumps;
-        } else if (airJumps > 0) {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        } else if (airJumps >= 0) {
+            velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
             airJumps--;
         }
     }

@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     public PlayerTeams PlayerTeam { get; private set; }
     public string PlayerName { get; private set; }
-    public int PlayerMoney { get; private set; }
+    public int PlayerMoney { get; set; }
     public int PlayerKills { get; private set; }
     public int PlayerDeaths { get; private set; }
     public int playerHealth;
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
 
     public void AssignTeam(int teamId)
     {
-        PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T;
+        PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T; // ct 0, t 1 for entire program
         playerUI.ToggleTeamSelector();
     
         
@@ -65,4 +65,9 @@ public class Player : MonoBehaviour
 
         _bridge.cameraHolder.SetActive(true);
     }
+}
+
+public class PlayerWeapons
+{
+    public bool HasArmor { get; set; }
 }
