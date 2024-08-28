@@ -2,21 +2,19 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public static InputManager Instance { get; private set; }
-    public PlayerControls PlayerControls;
-    public UI UI;
+    public PlayerControls PlayerControls { get; private set; }
+    public UI UI { get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (PlayerControls == null)
         {
-            Instance = this;
             PlayerControls = new PlayerControls();
-            UI = new UI();
         }
-        else
+
+        if (UI == null)
         {
-            Destroy(gameObject);
+            UI = new UI();
         }
     }
 

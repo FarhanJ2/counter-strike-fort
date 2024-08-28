@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    [SerializeField] private PlayerBridge _bridge;
+    
     private CharacterController controller;
     
     [SerializeField] private float speed = 12f;
@@ -38,21 +40,21 @@ public class PlayerMovement : NetworkBehaviour
     public float GetSpeed { get { return speed; } }
     public bool GetGrounded { get { return isGrounded; } }
 
-    private void Awake() {
+    private void Start() {
         controller = GetComponent<CharacterController>();
         
         oldSpeed = speed;
 
-        InputManager.Instance.PlayerControls.Movement.Jump.started += _ => Jump();
-        InputManager.Instance.PlayerControls.Movement.Prone.started += _ => Prone();
-        InputManager.Instance.PlayerControls.Movement.Crouch.started += _ => Crouch();
+        _bridge.InputManager.PlayerControls.Movement.Jump.started += _ => Jump();
+        _bridge.InputManager.PlayerControls.Movement.Prone.started += _ => Prone();
+        _bridge.InputManager.PlayerControls.Movement.Crouch.started += _ => Crouch();
 
-        InputManager.Instance.PlayerControls.Movement.Run.started += _ =>
+        _bridge.InputManager.PlayerControls.Movement.Run.started += _ =>
         {
             isSprinting = true;
         };
 
-        InputManager.Instance.PlayerControls.Movement.Run.canceled += _ => 
+        _bridge.InputManager.PlayerControls.Movement.Run.canceled += _ => 
         {
             isSprinting = false;
         };
@@ -68,8 +70,8 @@ public class PlayerMovement : NetworkBehaviour
                 velocity.y = -2f;
             }
 
-            float x = InputManager.Instance.PlayerControls.Movement.Strafe.ReadValue<float>();
-            float z = InputManager.Instance.PlayerControls.Movement.Translation.ReadValue<float>();
+            float x = _bridge.InputManager.PlayerControls.Movement.Strafe.ReadValue<float>();
+            float z = _bridge.InputManager.PlayerControls.Movement.Translation.ReadValue<float>();
 
             Vector3 move = transform.right * x + transform.forward * z;
 

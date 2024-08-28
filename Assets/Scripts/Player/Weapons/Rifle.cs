@@ -15,7 +15,7 @@ public class Rifle : Weapon
     private void OnEnable()
     {
         // InputManager.Instance.PlayerControls.Movement.Crouch.started += _ => Crouch();
-        InputManager.Instance.PlayerControls.Attack.Reload.started += _ => StartCoroutine(Reload());
+        // InputManager.Instance.PlayerControls.Attack.Reload.started += _ => StartCoroutine(Reload());
     }
 
     private void Update()

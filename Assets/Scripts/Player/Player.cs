@@ -97,6 +97,7 @@ public class PlayerWeapons
 {
     public bool HasArmor { get; set; }
     public bool HasHelmet { get; set; }
+    public bool HasKit { get; set; }
     public Weapon.WeaponName CurrentPrimary { get; set; }
     public Weapon.WeaponName CurrentSecondary { get; set; }
 }

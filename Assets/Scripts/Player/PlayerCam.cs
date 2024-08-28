@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerCam : NetworkBehaviour
 {
+    [SerializeField] private PlayerBridge _bridge;
     private readonly float _cameraRestPosition = 0.8f;
     private readonly float _crouchCameraPosition = 0.6f;
     
@@ -32,7 +33,7 @@ public class PlayerCam : NetworkBehaviour
             return;
         }
 
-        InputManager.Instance.PlayerControls.Movement.LeanLeft.started += _ => {
+        _bridge.InputManager.PlayerControls.Movement.LeanLeft.started += _ => {
             if (toggledLean) _isLeaning = !_isLeaning; // Toggle the leaning state
         };
 
@@ -45,7 +46,7 @@ public class PlayerCam : NetworkBehaviour
         //     }
         // };
 
-        InputManager.Instance.PlayerControls.Movement.LeanRight.started += _ => {
+        _bridge.InputManager.PlayerControls.Movement.LeanRight.started += _ => {
             if (toggledLean) _isLeaningRight = !_isLeaningRight; // Toggle the leaning state
         };
 
@@ -58,7 +59,7 @@ public class PlayerCam : NetworkBehaviour
         //     }
         // };
 
-        InputManager.Instance.PlayerControls.Movement.Crouch.started += _ => {
+        _bridge.InputManager.PlayerControls.Movement.Crouch.started += _ => {
             _isCrouching = !_isCrouching;
         };
     }
@@ -77,8 +78,8 @@ public class PlayerCam : NetworkBehaviour
         SetCameraEnabled(uiCamera, IsOwner);
 
         if (mouseEnabled) {
-            float mouseX = InputManager.Instance.PlayerControls.Camera.MouseX.ReadValue<float>() * mouseSens * Time.deltaTime;
-            float mouseY = InputManager.Instance.PlayerControls.Camera.MouseY.ReadValue<float>() * mouseSens * Time.deltaTime;
+            float mouseX = _bridge.InputManager.PlayerControls.Camera.MouseX.ReadValue<float>() * mouseSens * Time.deltaTime;
+            float mouseY = _bridge.InputManager.PlayerControls.Camera.MouseY.ReadValue<float>() * mouseSens * Time.deltaTime;
 
             _xRot -= mouseY;
             _xRot = Mathf.Clamp(_xRot, -90f, 90f);

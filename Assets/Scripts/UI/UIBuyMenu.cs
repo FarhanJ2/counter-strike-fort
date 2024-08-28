@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class UIBuyMenu : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _playerMoneyText;
+    // [SerializeField] private TMP_Text _playerMoneyText;
     [SerializeField] private GameObject _ctWeaponHolder, _tWeaponHolder;
     [SerializeField] private PlayerBridge _playerBridge;
 
@@ -35,6 +35,15 @@ public class UIBuyMenu : MonoBehaviour
         Weapon.WeaponName weaponName = Weapon.WeaponName.NONE;
         switch (weaponId)
         {
+            case -1:
+                // standardize this later
+                if (_playerBridge.player.PlayerTeam == Player.PlayerTeams.CT)
+                {
+                    if (_playerBridge.player.PlayerMoney < 400) return;
+                    _playerBridge.player.ownedWeapons.HasKit = true;
+                    _playerBridge.player.PlayerMoney -= 400;
+                }
+                return;
             case 0:
                 weaponName = Weapon.WeaponName.ARMOR;
                 break;
@@ -95,8 +104,8 @@ public class UIBuyMenu : MonoBehaviour
         return attribute?.WeaponPrice ?? 0;
     }
 
-    private void Update()
-    {
-        _playerMoneyText.text = "$" +_playerBridge.player.PlayerMoney;
-    }
+    // private void Update()
+    // {
+    //     _playerMoneyText.text = "$" +_playerBridge.player.PlayerMoney;
+    // }
 }

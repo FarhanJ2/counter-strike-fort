@@ -39,8 +39,6 @@ public class UIScoreboard : MonoBehaviour
             return;
         }
 
-        int maxPlayersPerTeam = 5;
-
         // for (int i = 0; i < maxPlayersPerTeam; i++)
         // {
         //     // CT Slots

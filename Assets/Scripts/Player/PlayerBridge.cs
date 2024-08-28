@@ -9,6 +9,7 @@ public class PlayerBridge : MonoBehaviour
     public PlayerMovement playerMovement;
     public Player player;
     public PlayerCam playerCamScript;
+    public InputManager InputManager;
     
     [Header("Cameras")] 
     public GameObject cameraHolder;

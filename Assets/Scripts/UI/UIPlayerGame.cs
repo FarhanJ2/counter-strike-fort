@@ -1,28 +1,53 @@
 using System.ComponentModel.Design;
+using TMPro;
 using UnityEngine;
 
 public class UIPlayerGame : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [SerializeField] private PlayerBridge _bridge;
+    
+    [Header("UI Screens")]
     [SerializeField] private GameObject scoreBoardUI;
     [SerializeField] private GameObject teamSelectorUI;
     [SerializeField] private GameObject buyMenuUI;
+    [SerializeField] private GameObject hudUI;
 
-    [SerializeField] private PlayerBridge _bridge;
-
-    private void OnEnable()
+    private void Start()
     {
-        InputManager.Instance.UI.UIPlayer.ToggleScoreboard.started += _ =>
+        if (_bridge == null)
+        {
+            Debug.LogError("Bridge is not assigned!");
+            return;
+        }
+
+        if (_bridge.InputManager == null)
+        {
+            Debug.LogError("InputManager is not assigned!");
+            return;
+        }
+
+        if (_bridge.InputManager.PlayerControls == null)
+        {
+            Debug.LogError("PlayerControls is not assigned");
+        }
+
+        if (_bridge.InputManager.UI == null)
+        {
+            Debug.LogError("UI is not assigned!");
+            return;
+        }
+        
+        _bridge.InputManager.UI.UIPlayer.ToggleScoreboard.started += _ =>
         {
             scoreBoardUI.SetActive(true);
         };
-        InputManager.Instance.UI.UIPlayer.ToggleScoreboard.canceled += _ =>
+        _bridge.InputManager.UI.UIPlayer.ToggleScoreboard.canceled += _ =>
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             scoreBoardUI.SetActive(false);
         };
-        InputManager.Instance.UI.UIPlayer.UIRightClick.started += _ =>
+        _bridge.InputManager.UI.UIPlayer.UIRightClick.started += _ =>
         {
             if (scoreBoardUI.activeSelf)
             {
@@ -30,8 +55,8 @@ public class UIPlayerGame : MonoBehaviour
                 Cursor.visible = true;
             }
         };
-        InputManager.Instance.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
-        InputManager.Instance.UI.UIPlayer.ToggleBuyMenu.started += _ => ToggleBuyMenu();
+        _bridge.InputManager.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
+        _bridge.InputManager.UI.UIPlayer.ToggleBuyMenu.started += _ => ToggleBuyMenu();
     }
 
     public void ToggleTeamSelector()
