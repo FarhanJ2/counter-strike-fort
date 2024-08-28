@@ -53,6 +53,15 @@ public partial class @UI: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleBuyMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""826b80fe-f525-4c81-8513-b35abb952d27"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -86,6 +95,17 @@ public partial class @UI: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""UIRightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6aeea0cb-c2fb-4584-9448-77edd43a2f83"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleBuyMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -127,6 +147,7 @@ public partial class @UI: IInputActionCollection2, IDisposable
         m_UIPlayer_ToggleScoreboard = m_UIPlayer.FindAction("ToggleScoreboard", throwIfNotFound: true);
         m_UIPlayer_UILeftClick = m_UIPlayer.FindAction("UILeftClick", throwIfNotFound: true);
         m_UIPlayer_UIRightClick = m_UIPlayer.FindAction("UIRightClick", throwIfNotFound: true);
+        m_UIPlayer_ToggleBuyMenu = m_UIPlayer.FindAction("ToggleBuyMenu", throwIfNotFound: true);
         // UIGlobal
         m_UIGlobal = asset.FindActionMap("UIGlobal", throwIfNotFound: true);
         m_UIGlobal_ToggleTeamSelector = m_UIGlobal.FindAction("ToggleTeamSelector", throwIfNotFound: true);
@@ -194,6 +215,7 @@ public partial class @UI: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIPlayer_ToggleScoreboard;
     private readonly InputAction m_UIPlayer_UILeftClick;
     private readonly InputAction m_UIPlayer_UIRightClick;
+    private readonly InputAction m_UIPlayer_ToggleBuyMenu;
     public struct UIPlayerActions
     {
         private @UI m_Wrapper;
@@ -201,6 +223,7 @@ public partial class @UI: IInputActionCollection2, IDisposable
         public InputAction @ToggleScoreboard => m_Wrapper.m_UIPlayer_ToggleScoreboard;
         public InputAction @UILeftClick => m_Wrapper.m_UIPlayer_UILeftClick;
         public InputAction @UIRightClick => m_Wrapper.m_UIPlayer_UIRightClick;
+        public InputAction @ToggleBuyMenu => m_Wrapper.m_UIPlayer_ToggleBuyMenu;
         public InputActionMap Get() { return m_Wrapper.m_UIPlayer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -219,6 +242,9 @@ public partial class @UI: IInputActionCollection2, IDisposable
             @UIRightClick.started += instance.OnUIRightClick;
             @UIRightClick.performed += instance.OnUIRightClick;
             @UIRightClick.canceled += instance.OnUIRightClick;
+            @ToggleBuyMenu.started += instance.OnToggleBuyMenu;
+            @ToggleBuyMenu.performed += instance.OnToggleBuyMenu;
+            @ToggleBuyMenu.canceled += instance.OnToggleBuyMenu;
         }
 
         private void UnregisterCallbacks(IUIPlayerActions instance)
@@ -232,6 +258,9 @@ public partial class @UI: IInputActionCollection2, IDisposable
             @UIRightClick.started -= instance.OnUIRightClick;
             @UIRightClick.performed -= instance.OnUIRightClick;
             @UIRightClick.canceled -= instance.OnUIRightClick;
+            @ToggleBuyMenu.started -= instance.OnToggleBuyMenu;
+            @ToggleBuyMenu.performed -= instance.OnToggleBuyMenu;
+            @ToggleBuyMenu.canceled -= instance.OnToggleBuyMenu;
         }
 
         public void RemoveCallbacks(IUIPlayerActions instance)
@@ -300,6 +329,7 @@ public partial class @UI: IInputActionCollection2, IDisposable
         void OnToggleScoreboard(InputAction.CallbackContext context);
         void OnUILeftClick(InputAction.CallbackContext context);
         void OnUIRightClick(InputAction.CallbackContext context);
+        void OnToggleBuyMenu(InputAction.CallbackContext context);
     }
     public interface IUIGlobalActions
     {

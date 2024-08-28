@@ -6,6 +6,9 @@ public class UIPlayerGame : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject scoreBoardUI;
     [SerializeField] private GameObject teamSelectorUI;
+    [SerializeField] private GameObject buyMenuUI;
+
+    [SerializeField] private PlayerBridge _bridge;
 
     private void OnEnable()
     {
@@ -28,10 +31,33 @@ public class UIPlayerGame : MonoBehaviour
             }
         };
         InputManager.Instance.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
+        InputManager.Instance.UI.UIPlayer.ToggleBuyMenu.started += _ => ToggleBuyMenu();
     }
 
     public void ToggleTeamSelector()
     {
+        _bridge.playerCamScript.mouseEnabled = buyMenuUI.activeSelf;
         teamSelectorUI.SetActive(!teamSelectorUI.activeSelf);
+    }
+
+    private void ToggleBuyMenu()
+    {
+        _bridge.playerCamScript.mouseEnabled = buyMenuUI.activeSelf;
+        LockCursor(buyMenuUI.activeSelf);
+        buyMenuUI.SetActive(!buyMenuUI.activeSelf);
+    }
+
+    private void LockCursor(bool lockCursor)
+    {
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 }

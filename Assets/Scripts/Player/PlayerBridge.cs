@@ -5,6 +5,11 @@ using UnityEngine;
 public class PlayerBridge : MonoBehaviour
 {
     // For all values that need to be accessed by EACH sub-set
+    [Header("Player Files")] 
+    public PlayerMovement playerMovement;
+    public Player player;
+    public PlayerCam playerCamScript;
+    
     [Header("Cameras")] 
     public GameObject cameraHolder;
     public Camera playerCamera;

@@ -25,7 +25,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera weaponCamera;
 
-    public bool canMove = true;
+    public bool canMove = false;
 
     private Vector3 velocity;
     public bool isGrounded;
@@ -86,7 +86,7 @@ public class PlayerMovement : NetworkBehaviour
             controller.Move(move * speed * Time.deltaTime);
             velocity.y -= gravity * Time.deltaTime;
 
-            Debug.Log("Current velocity" + velocity.y);
+            // Debug.Log("Current velocity" + velocity.y);
 
             controller.Move(velocity * Time.deltaTime);
 

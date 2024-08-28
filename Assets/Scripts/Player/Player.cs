@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public int PlayerKills { get; private set; }
     public int PlayerDeaths { get; private set; }
     public int playerHealth;
+
+    public PlayerWeapons ownedWeapons = new PlayerWeapons();
     
     public enum PlayerTeams
     {
@@ -27,6 +29,7 @@ public class Player : MonoBehaviour
         PlayerName = "Player " + Random.Range(0, 1000);
         _bridge = GetComponent<PlayerBridge>();
         OnCreateClient();
+        PlayerMoney = 8000;
     }
 
     private void OnCreateClient() // when the player object is created not on SPAWN
@@ -47,6 +50,27 @@ public class Player : MonoBehaviour
         PlayerDeaths++;
     }
 
+    public void TakeDamage(int damage)
+    {
+        playerHealth -= damage;
+
+        if (playerHealth <= 0)
+        {
+            playerHealth = 0;
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        // Instantiate() // drop weapon
+        
+        ownedWeapons.HasArmor = false;
+        ownedWeapons.HasHelmet = false;
+        ownedWeapons.CurrentPrimary = Weapon.WeaponName.NONE;
+        ownedWeapons.CurrentSecondary = Weapon.WeaponName.NONE;
+    }
+
     public void AssignTeam(int teamId)
     {
         PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T; // ct 0, t 1 for entire program
@@ -64,10 +88,15 @@ public class Player : MonoBehaviour
         }
 
         _bridge.cameraHolder.SetActive(true);
+        _bridge.playerMovement.canMove = true;
+        _bridge.playerCamScript.mouseEnabled = true;
     }
 }
 
 public class PlayerWeapons
 {
     public bool HasArmor { get; set; }
+    public bool HasHelmet { get; set; }
+    public Weapon.WeaponName CurrentPrimary { get; set; }
+    public Weapon.WeaponName CurrentSecondary { get; set; }
 }
