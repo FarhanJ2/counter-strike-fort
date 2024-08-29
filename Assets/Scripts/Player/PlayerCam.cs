@@ -17,11 +17,11 @@ public class PlayerCam : NetworkBehaviour
     public bool toggledLean = true;
 
     private float _xRot = 0;
-    private float _cameraLean = 0; // Initialize the camera lean angle
+    private float _cameraLean = 0;
     private float _headMove = 0;
     private float _crouchMove = 0;
 
-    public float maxCameraLean = 30.0f; // Adjust this value as needed for the lean effect
+    public float maxCameraLean = 30.0f; // adjust this value as needed for the lean effect
 
 
     // NETWORK VARS && OWNERSHIP FUNCTIONS
@@ -80,38 +80,47 @@ public class PlayerCam : NetworkBehaviour
         if (mouseEnabled) {
             float mouseX = _bridge.InputManager.PlayerControls.Camera.MouseX.ReadValue<float>() * mouseSens * Time.deltaTime;
             float mouseY = _bridge.InputManager.PlayerControls.Camera.MouseY.ReadValue<float>() * mouseSens * Time.deltaTime;
-
+            float lean = _bridge.InputManager.PlayerControls.Movement.Lean.ReadValue<float>();
+            
             _xRot -= mouseY;
             _xRot = Mathf.Clamp(_xRot, -90f, 90f);
 
-            // Apply camera rotation
             transform.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
             body.Rotate(Vector3.up * mouseX);
 
+            // if (lean > 0)
+            // {
+            //     _cameraLean = Mathf.Lerp(_cameraLean, maxCameraLean, 0.01f);
+            //     transform.localRotation *= Quaternion.Euler(0f, 0f, _cameraLean);
+            //
+            //     _headMove = Mathf.Lerp(_headMove, -1.5f, 0.01f);
+            //     transform.localPosition = new Vector3(_headMove, _cameraRestPosition, 0.01f);
+            // }
+            
             if (_isLeaning) {
                 _cameraLean = Mathf.Lerp(_cameraLean, maxCameraLean, 0.01f);
                 transform.localRotation *= Quaternion.Euler(0f, 0f, _cameraLean);
-
+            
                 _headMove = Mathf.Lerp(_headMove, -1.5f, 0.01f);
                 transform.localPosition = new Vector3(_headMove, _cameraRestPosition, 0.01f);
             } else if (!_isLeaning) {
                 _cameraLean = Mathf.Lerp(_cameraLean, 0f, 0.008f);
                 transform.localRotation *= Quaternion.Euler(0f, 0f, _cameraLean);
-
+            
                 _headMove = Mathf.Lerp(_headMove, 0f, 0.01f);
                 transform.localPosition = new Vector3(_headMove, _cameraRestPosition, 0.01f);
             }
-
+            
             if (_isLeaningRight) {
                 _cameraLean = Mathf.Lerp(_cameraLean, -maxCameraLean, 0.01f);
                 transform.localRotation *= Quaternion.Euler(0f, 0f, _cameraLean);
-
+            
                 _headMove = Mathf.Lerp(_headMove, 1.5f, 0.01f);
                 transform.localPosition = new Vector3(_headMove, _cameraRestPosition, 0.01f);
             } else if (!_isLeaningRight) {
                 _cameraLean = Mathf.Lerp(_cameraLean, 0f, 0.008f);
                 transform.localRotation *= Quaternion.Euler(0f, 0f, _cameraLean);
-
+            
                 _headMove = Mathf.Lerp(_headMove, 0f, 0.01f);
                 transform.localPosition = new Vector3(_headMove, _cameraRestPosition, 0.01f);
             }
