@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] concreteSounds;
-    [SerializeField] private AudioClip[] woodSounds;
+    [SerializeField] private AudioClip[] concreteSounds, woodSounds, dirtSounds, sandSounds;
 
     [SerializeField] private AudioClip[] ctVo, tVo;
     private AudioSource _source;
@@ -83,6 +82,12 @@ public class PlayerSounds : MonoBehaviour
                 break;
             case "Wood":
                 _source.PlayOneShot(woodSounds[Random.Range(0, woodSounds.Length)]);
+                break;
+            case "Dirt":
+                _source.PlayOneShot(dirtSounds[Random.Range(0, dirtSounds.Length)]);
+                break;
+            case "Sand":
+                _source.PlayOneShot(sandSounds[Random.Range(0, sandSounds.Length)]);
                 break;
         }
     }

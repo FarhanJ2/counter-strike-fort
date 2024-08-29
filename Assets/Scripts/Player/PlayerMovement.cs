@@ -74,7 +74,6 @@ public class PlayerMovement : NetworkBehaviour
             if (Physics.Raycast(groundCheckObject.transform.position, Vector3.down, out RaycastHit hit, groundDistance + 1f, groundLayer))
             {
                 string floorTag = hit.collider.gameObject.tag;
-                Debug.Log("Player is standing on a surface tagged: " + floorTag);
                 _floorSurface = floorTag;
             }
             

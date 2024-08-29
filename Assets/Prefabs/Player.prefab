@@ -504,6 +504,34 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 17e4d729331fc984795de6e8fe72a821, type: 3}
   - {fileID: 8300000, guid: cac87fa7bfd27b348a0fc2d935425d79, type: 3}
   - {fileID: 8300000, guid: ecaccc71aab74b941bf3d5ee44163305, type: 3}
+  dirtSounds:
+  - {fileID: 8300000, guid: cdf2c17a757651b4b89f237f20f61a29, type: 3}
+  - {fileID: 8300000, guid: 58bf8696a3f6a604ebd9f4be438e73c4, type: 3}
+  - {fileID: 8300000, guid: e84792ab294d02f4bb9c0d59a4ad2c1e, type: 3}
+  - {fileID: 8300000, guid: 506692cd7a1d8864caad339911564f5e, type: 3}
+  - {fileID: 8300000, guid: 2c444aff68efb4d4eae2bcbe8ab68864, type: 3}
+  - {fileID: 8300000, guid: 3e52a8067d05abb4aa4d9822f5dfc6b1, type: 3}
+  - {fileID: 8300000, guid: cd92d5adc05ba2946bcbd59ebadea117, type: 3}
+  - {fileID: 8300000, guid: 957e2930a3c1b6d458ac7a8084a3c344, type: 3}
+  - {fileID: 8300000, guid: c19fc5d8ea0e6834fa5ca4901b668437, type: 3}
+  - {fileID: 8300000, guid: 1d6500cb56869fe4986ef79a5e3c1072, type: 3}
+  - {fileID: 8300000, guid: 0701f7b93c1066346b9af9b6fa532f04, type: 3}
+  - {fileID: 8300000, guid: 1d7a2012600fcfd4d9823eb78f715b0d, type: 3}
+  - {fileID: 8300000, guid: 46c272de7a264eb4d999b3e575471318, type: 3}
+  - {fileID: 8300000, guid: c1a7ca89a9d73dc45a987c9d9caa8d7d, type: 3}
+  sandSounds:
+  - {fileID: 8300000, guid: f104b8c458e72c540810e0fcbef46fa0, type: 3}
+  - {fileID: 8300000, guid: 87d83ca12531ba641ab8cd7c02228219, type: 3}
+  - {fileID: 8300000, guid: 9447d7d8d345b374ab88b2f4da52ff83, type: 3}
+  - {fileID: 8300000, guid: 0529d71f4c18fd44d94c88635734b17b, type: 3}
+  - {fileID: 8300000, guid: 24fab74b3b39ff24fba8b0757093706f, type: 3}
+  - {fileID: 8300000, guid: 7cadeb31e0b043c4aa43818d5c2d98e9, type: 3}
+  - {fileID: 8300000, guid: f94ec3289ec79b34390c016b65429be5, type: 3}
+  - {fileID: 8300000, guid: 854e06bd9f92bc6408108ffe5d88aa43, type: 3}
+  - {fileID: 8300000, guid: 6f2fe607a166eac4590ac7777c69d343, type: 3}
+  - {fileID: 8300000, guid: 18b34db2854260543ada3b83d134c861, type: 3}
+  - {fileID: 8300000, guid: 2726e175eac111947ae4fd7efc4989a9, type: 3}
+  - {fileID: 8300000, guid: 31a36dddc0e8bdf49a45ee2146bfa4e7, type: 3}
   ctVo: []
   tVo:
   - {fileID: 8300000, guid: 022f278968efbcd478b69dcaf0380bd3, type: 3}
@@ -847,7 +875,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.02, z: 0}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!114 &3044013703356071225
 MonoBehaviour:
   m_ObjectHideFlags: 0

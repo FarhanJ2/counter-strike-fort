@@ -14,7 +14,7 @@ public class UIHud : MonoBehaviour
     [SerializeField] private TMP_Text _roundTimerText;
 
     [SerializeField] private PlayerBridge _bridge;
-
+    
     private void Update()
     {
         if (_bridge.player.PlayerTeam != Player.PlayerTeams.CT || !_bridge.player.ownedWeapons.HasKit)

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wood
   - Concrete
+  - Dirt
+  - Sand
   layers:
   - Default
   - TransparentFX

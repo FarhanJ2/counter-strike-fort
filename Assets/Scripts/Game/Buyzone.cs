@@ -8,11 +8,13 @@ public class Buyzone : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        Player player = other.GetComponent<Player>();
-
-        if (player.PlayerTeam == BuyzoneTeam || BuyzoneTeam == Player.PlayerTeams.UNASSIGNED)
+        if (other.CompareTag("Player"))
         {
-            player.InBuyZone = true;
+            Player player = other.GetComponent<Player>();
+            if (player.PlayerTeam == BuyzoneTeam || BuyzoneTeam == Player.PlayerTeams.UNASSIGNED)
+            {
+                player.InBuyZone = true;
+            }
         }
     }
 
