@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,8 +18,9 @@ public class GameManager : MonoBehaviour
     public int TPlayersAlive { get; private set; }
 
     public float freezeTime = 15f;
-    public float roundTime = 120f;
+    public float roundTime = 10f;
     public float bombTime = 40f;
+    public float afterRoundEnd = 5f;
     private float _timeRemaining;
     private bool _timerRunning = false;
 
@@ -48,6 +50,9 @@ public class GameManager : MonoBehaviour
 
         Player.OnHealthChanged += SetPlayerCounts;
         OnMajorEvent += CheckForRoundWin;
+
+        CtWins = 0;
+        TWins = 0;
     }
 
     private void OnDisable()
@@ -57,6 +62,9 @@ public class GameManager : MonoBehaviour
 
     public void StartRound()
     {
+        AudioManager.Instance.PlaySound(Random.Range(0, 1) > .5
+            ? AudioManager.VO.LETS_GO_CT_0
+            : AudioManager.VO.LETS_GO_CT_1);
         _roundPhase = 1;
         _timeRemaining = roundTime;
         Debug.Log("Round time started. Time remaining: " + _timeRemaining);
@@ -73,18 +81,21 @@ public class GameManager : MonoBehaviour
         if (CtPlayersAlive == 0) // CT players are all dead
         {
             TWins++;
+            AudioManager.Instance.PlaySound(AudioManager.Sound.T_WIN);
             EndRound(); // End round
         }
 
         if (TPlayersAlive == 0) // T players are all dead
         {
             CtWins++;
+            AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
             EndRound(); // End round
         }
 
         if (C4Planted && C4Exploded) // Bomb planted and exploded
         {
             TWins++;
+            AudioManager.Instance.PlaySound(AudioManager.Sound.T_WIN);
             EndRound(); // End round
         }
     }
@@ -93,14 +104,11 @@ public class GameManager : MonoBehaviour
     {
         _timerRunning = false;
         Debug.Log("Round ended");
-        // Optionally trigger an event here to notify round end
     }
 
     private void RoundTimer()
     {
         _timeRemaining -= Time.deltaTime;
-        Debug.Log("Time remaining: " + _timeRemaining);
-
         if (_timeRemaining <= 0)
         {
             _timeRemaining = 0;
@@ -109,9 +117,10 @@ public class GameManager : MonoBehaviour
             {
                 StartRound();
             }
-            else if (_roundPhase == 1)
+            else if (_roundPhase == 1) // ct win by time ending
             {
                 EndRound();
+                AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
             }
         }
     }

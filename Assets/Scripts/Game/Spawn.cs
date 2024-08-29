@@ -8,8 +8,7 @@ using UnityEngine.Serialization;
 public class Spawn : MonoBehaviour
 {
     public bool IsOccupied { get; private set; }
-    public Vector3 gizmoSize = new Vector3(1.5f, 3f, 1.5f);
-
+    
     public Vector3 GetSpawnPosition()
     {
         return gameObject.transform.position;
@@ -34,6 +33,6 @@ public class Spawn : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = IsOccupied ? Color.red : Color.green;
-        Gizmos.DrawWireCube(transform.position, gizmoSize);
+        Gizmos.DrawWireCube(transform.position, new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z));
     }
 }

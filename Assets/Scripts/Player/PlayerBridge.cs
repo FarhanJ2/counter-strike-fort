@@ -10,6 +10,7 @@ public class PlayerBridge : MonoBehaviour
     public Player player;
     public PlayerCam playerCamScript;
     public InputManager InputManager;
+    public PlayerSounds playerSounds;
     
     [Header("Cameras")] 
     public GameObject cameraHolder;

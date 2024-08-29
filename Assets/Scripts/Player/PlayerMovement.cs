@@ -1,4 +1,6 @@
+using System.Collections;
 using FishNet.Object;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
@@ -29,13 +31,16 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool canMove = false;
 
-    private Vector3 velocity;
+    private Vector3 _velocity;
     public bool isGrounded;
-    private bool isSprinting;
-    private bool isCrouching = false;
-    private bool onLadder = false;
+    private bool _isSprinting;
+    private bool _isCrouching = false;
+    private bool _onLadder = false;
 
     float ladderGrabDistance = 1f;
+
+    private string _floorSurface;
+    private bool _canPlayFootstep = true;
 
     public float GetSpeed { get { return speed; } }
     public bool GetGrounded { get { return isGrounded; } }
@@ -51,23 +56,31 @@ public class PlayerMovement : NetworkBehaviour
 
         _bridge.InputManager.PlayerControls.Movement.Run.started += _ =>
         {
-            isSprinting = true;
+            _isSprinting = true;
         };
 
         _bridge.InputManager.PlayerControls.Movement.Run.canceled += _ => 
         {
-            isSprinting = false;
+            _isSprinting = false;
         };
 
     }
 
-    public virtual void Update() {
+    public virtual void Update() 
+    {
         if (!IsOwner) return;
         if (canMove) {
             isGrounded = Physics.CheckSphere(groundCheckObject.transform.position, groundDistance, groundLayer);
+            if (Physics.Raycast(groundCheckObject.transform.position, Vector3.down, out RaycastHit hit, groundDistance + 1f, groundLayer))
+            {
+                string floorTag = hit.collider.gameObject.tag;
+                Debug.Log("Player is standing on a surface tagged: " + floorTag);
+                _floorSurface = floorTag;
+            }
+            
 
-            if (isGrounded && velocity.y < 0) {
-                velocity.y = -2f;
+            if (isGrounded && _velocity.y < 0) {
+                _velocity.y = -2f;
             }
 
             float x = _bridge.InputManager.PlayerControls.Movement.Strafe.ReadValue<float>();
@@ -76,7 +89,7 @@ public class PlayerMovement : NetworkBehaviour
             Vector3 move = transform.right * x + transform.forward * z;
 
             if (isGrounded) {
-                if (isSprinting) {
+                if (_isSprinting) {
                     speed = Mathf.Lerp(speed, runSpeed, sprintChangingSpeed * Time.deltaTime);
                 } else {
                     speed = Mathf.Lerp(speed, oldSpeed, sprintChangingSpeed * Time.deltaTime);
@@ -86,29 +99,45 @@ public class PlayerMovement : NetworkBehaviour
             }
             
             controller.Move(move * speed * Time.deltaTime);
-            velocity.y -= gravity * Time.deltaTime;
+            _velocity.y -= gravity * Time.deltaTime;
 
             // Debug.Log("Current velocity" + velocity.y);
 
-            controller.Move(velocity * Time.deltaTime);
+            controller.Move(_velocity * Time.deltaTime);
 
             float fovEval = fovCurve.Evaluate(speed);
             mainCamera.fieldOfView = fovEval;
             weaponCamera.fieldOfView = fovEval;
 
             LadderLogic(move);
+            HandleMovementSound(move);
+        }
+    }
+    
+    private void HandleMovementSound(Vector3 move)
+    {
+        if (move.magnitude > 0 && isGrounded && _canPlayFootstep)
+        {
+            StartCoroutine(PlayFootstepSound());
         }
     }
 
+    private IEnumerator PlayFootstepSound()
+    {
+        _canPlayFootstep = false;
+        _bridge.playerSounds.PlayFootstep(_floorSurface);
+        yield return new WaitForSeconds(_isSprinting ? .25f : .3f);
+        _canPlayFootstep = true;
+    }
 
     private void Jump() {
         if (isGrounded)
         {
-            velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
+            _velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
             speed = Mathf.Lerp(speed, speed - 2, sprintChangingSpeed * 4 * Time.deltaTime);
             airJumps = maxAirJumps;
         } else if (airJumps >= 0) {
-            velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
+            _velocity.y = Mathf.Sqrt(Mathf.Abs(jumpForce * -2f * gravity));
             airJumps--;
         }
     }
@@ -119,11 +148,11 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     private void Crouch() {
-        isCrouching = !isCrouching;
-        if (isCrouching) {
+        _isCrouching = !_isCrouching;
+        if (_isCrouching) {
             controller.height = 0.779f;
             controller.center = new Vector3(0f, 0.57f, 0f);
-        } else if (!isCrouching) {
+        } else if (!_isCrouching) {
             controller.height = 0.979f;
             controller.center = new Vector3(0f, 1f, 0f);
         }
@@ -131,7 +160,7 @@ public class PlayerMovement : NetworkBehaviour
 
     
     private void LadderLogic(Vector3 move) {
-        if (!onLadder) {
+        if (!_onLadder) {
             // Not climbing a ladder
             if (Physics.Raycast(ladderRayCheck.transform.position, move, out RaycastHit raycastHit, ladderGrabDistance)) {
                 // Debug.Log(raycastHit.transform);
@@ -139,12 +168,12 @@ public class PlayerMovement : NetworkBehaviour
                     GrabLadder();                
                 }
 
-                if (onLadder) {
+                if (_onLadder) {
                     // Debug.Log("Ladder Found");
                     // move.x = 0f;
                     // move.y = move.z;
                     // velocity = Vector3.zero;
-                    velocity.y = Mathf.Sqrt(20);
+                    _velocity.y = Mathf.Sqrt(20);
                     isGrounded = true;
                 }
             }
@@ -162,10 +191,10 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     private void GrabLadder() {
-        onLadder = true;
+        _onLadder = true;
     }
 
     private void DropLadder() {
-        onLadder = false;
+        _onLadder = false;
     }
 }
