@@ -14,6 +14,12 @@ public class UIHud : MonoBehaviour
     [SerializeField] private TMP_Text _roundTimerText;
 
     [SerializeField] private PlayerBridge _bridge;
+
+    public void ToggleHUD()
+    {
+        _winsText.enabled = !_winsText.enabled;
+        _playersAliveText.enabled = !_playersAliveText.enabled;
+    }
     
     private void Update()
     {

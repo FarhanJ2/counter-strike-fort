@@ -40,12 +40,15 @@ public class UIPlayerGame : MonoBehaviour
         _bridge.InputManager.UI.UIPlayer.ToggleScoreboard.started += _ =>
         {
             scoreBoardUI.SetActive(true);
+            _bridge.uiHud.ToggleHUD();
         };
         _bridge.InputManager.UI.UIPlayer.ToggleScoreboard.canceled += _ =>
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            _bridge.uiHud.ToggleHUD();
             scoreBoardUI.SetActive(false);
+            _bridge.playerCamScript.mouseEnabled = true;
         };
         _bridge.InputManager.UI.UIPlayer.UIRightClick.started += _ =>
         {
@@ -53,6 +56,7 @@ public class UIPlayerGame : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                _bridge.playerCamScript.mouseEnabled = false;
             }
         };
         _bridge.InputManager.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
@@ -74,6 +78,7 @@ public class UIPlayerGame : MonoBehaviour
             bool isMenuActive = buyMenuUI.activeSelf;
             _bridge.playerCamScript.mouseEnabled = isMenuActive;
             LockCursor(isMenuActive);
+            _bridge.uiHud.ToggleHUD();
             buyMenuUI.SetActive(!isMenuActive);
         }
         else
