@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
+    [Header("Footsteps")]
     [SerializeField] private AudioClip[] concreteSounds, woodSounds, dirtSounds, sandSounds;
-
+    [Header("Voice Lines")]
     [SerializeField] private AudioClip[] ctVo, tVo;
+
+    [Header("UI")] [SerializeField] private AudioClip[] buyMenu; 
     private AudioSource _source;
 
     public bool IsPlaying => _source.isPlaying;
@@ -95,6 +98,12 @@ public class PlayerSounds : MonoBehaviour
     public void PlaySound(ConcreteFootsteps sound)
     {
         AudioClip clip = concreteSounds[(int)sound];
+        _source.PlayOneShot(clip);
+    }
+
+    public void PlayBuySound()
+    {
+        AudioClip clip = buyMenu[Random.Range(0, buyMenu.Length)];
         _source.PlayOneShot(clip);
     }
 }

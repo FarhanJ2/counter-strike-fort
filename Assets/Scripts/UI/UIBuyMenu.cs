@@ -32,6 +32,8 @@ public class UIBuyMenu : MonoBehaviour
 
     public void PurchaseWeapon(int weaponId)
     {
+        _playerBridge.playerSounds.PlayBuySound();
+        
         Weapon.WeaponName weaponName = Weapon.WeaponName.NONE;
         switch (weaponId)
         {

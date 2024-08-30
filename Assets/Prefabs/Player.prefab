@@ -536,6 +536,10 @@ MonoBehaviour:
   tVo:
   - {fileID: 8300000, guid: 022f278968efbcd478b69dcaf0380bd3, type: 3}
   - {fileID: 8300000, guid: f1115565d3b0eff44889d5a6caad5868, type: 3}
+  buyMenu:
+  - {fileID: 8300000, guid: c8334c12a4adac04c94c6be887287976, type: 3}
+  - {fileID: 8300000, guid: 1fe85d0b049d4dd4b95c1cf5428b8fc0, type: 3}
+  - {fileID: 8300000, guid: 94438cf8a1f2a3046bef26b101d24ac1, type: 3}
 --- !u!1 &258950253186284259
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,9 +852,9 @@ Transform:
   - {fileID: 649014078400142630}
   - {fileID: 3478144896961874825}
   - {fileID: 4319869982947292235}
-  - {fileID: 7430487188883386846}
   - {fileID: 4056687918552992090}
   - {fileID: 698336408437540044}
+  - {fileID: 7430487188883386846}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &3747011639579000973

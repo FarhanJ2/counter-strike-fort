@@ -35,7 +35,9 @@ public class PlayerInventory : MonoBehaviour
             w.SetActive(false);
         }
 
-        if (_bridge.player.ownedWeapons.CurrentPrimary == Weapon.WeaponName.NONE || _bridge.player.ownedWeapons.CurrentSecondary == Weapon.WeaponName.NONE || !_bridge.player.ownedWeapons.HasBomb)
+        if ((_bridge.player.ownedWeapons.CurrentPrimary == Weapon.WeaponName.NONE && slot == 1) ||
+            (_bridge.player.ownedWeapons.CurrentSecondary == Weapon.WeaponName.NONE && slot == 2) ||
+            (!_bridge.player.ownedWeapons.HasBomb && slot == 5))
         {
             Debug.Log("Player doesnt own any weapon in slot " + slot);
             return;

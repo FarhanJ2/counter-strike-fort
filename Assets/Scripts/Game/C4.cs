@@ -3,12 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class C4 : MonoBehaviour
+public class C4 : Weapon
 {
     [SerializeField] private GameObject _model;
     [SerializeField] private BoxCollider _physicsCollider;
     public bool BombDown { get; set; }
     private PlayerBridge _bridge;
+
+    private float _plantingTime = 3f;
+
+    public override void Fire()
+    {
+        if (BombDown || _bridge == null) return;
+    }
 
     private void Start()
     {
