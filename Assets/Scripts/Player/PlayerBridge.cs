@@ -11,6 +11,7 @@ public class PlayerBridge : MonoBehaviour
     public PlayerCam playerCamScript;
     public InputManager InputManager;
     public PlayerSounds playerSounds;
+    public PlayerInventory PlayerInventory;
 
     [Header("UI Managers")] 
     public UIHud uiHud;

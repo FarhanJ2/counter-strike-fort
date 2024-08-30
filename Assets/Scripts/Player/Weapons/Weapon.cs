@@ -28,8 +28,9 @@ public abstract class Weapon : MonoBehaviour
         [WeaponAttr(false, 0)] NONE,
         [WeaponAttr(false, 650)] ARMOR,
         [WeaponAttr(false, 1000)] ARMOR_HELM,
+        [WeaponAttr(false, 0)] C4,
         [WeaponAttr(true, 2700)] AK47, 
-        [WeaponAttr(false, 200)] USPS
+        [WeaponAttr(false, 200)] USPS,
     }
 
     protected bool isReloading = false;

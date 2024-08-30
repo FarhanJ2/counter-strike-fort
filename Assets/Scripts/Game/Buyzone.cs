@@ -20,6 +20,7 @@ public class Buyzone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!other.CompareTag("Player")) return;
         Player player = other.GetComponent<Player>();
         player.InBuyZone = false;
         OnExitBuyzone?.Invoke();
