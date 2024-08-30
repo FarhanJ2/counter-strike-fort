@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using TMPro;
 using UnityEngine;
 
-public class UIHud : MonoBehaviour
+public class UIHud : NetworkBehaviour
 {
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private TMP_Text _defuseKitText;
@@ -20,7 +21,20 @@ public class UIHud : MonoBehaviour
         _winsText.enabled = !_winsText.enabled;
         _playersAliveText.enabled = !_playersAliveText.enabled;
     }
-    
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (base.IsOwner)
+        {
+            
+        }
+        else
+        {
+            gameObject.GetComponent<UIHud>().enabled = false;
+        }
+    }
+
     private void Update()
     {
         if (_bridge.player.PlayerTeam != Player.PlayerTeams.CT || !_bridge.player.ownedWeapons.HasKit)

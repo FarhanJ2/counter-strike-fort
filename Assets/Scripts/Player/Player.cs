@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     public PlayerTeams PlayerTeam { get; private set; }
     public string PlayerName { get; private set; }
@@ -36,6 +37,20 @@ public class Player : MonoBehaviour
         _bridge = GetComponent<PlayerBridge>();
         OnCreateClient();
         PlayerMoney = 8000;
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (base.IsOwner)
+        {
+            Debug.Log("Player Movement Client Init");
+        }
+        else
+        {
+            // disables all other player controllers so the player doesnt control multiple players
+            // gameObject.GetComponent<Player>().enabled = false;
+        }
     }
 
     private void OnCreateClient() // when the player object is created not on SPAWN
@@ -78,7 +93,7 @@ public class Player : MonoBehaviour
         ownedWeapons.CurrentPrimary = Weapon.WeaponName.NONE;
         ownedWeapons.CurrentSecondary = Weapon.WeaponName.NONE;
     }
-
+    
     public void AssignTeam(int teamId)
     {
         PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T; // ct 0, t 1 for entire program

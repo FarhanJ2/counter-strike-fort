@@ -1,8 +1,9 @@
 using System.ComponentModel.Design;
+using FishNet.Object;
 using TMPro;
 using UnityEngine;
 
-public class UIPlayerGame : MonoBehaviour
+public class UIPlayerGame : NetworkBehaviour
 {
     [SerializeField] private PlayerBridge _bridge;
     
@@ -63,6 +64,25 @@ public class UIPlayerGame : MonoBehaviour
         _bridge.InputManager.UI.UIPlayer.ToggleBuyMenu.started += _ => ToggleBuyMenu();
 
         Buyzone.OnExitBuyzone += ToggleBuyMenu;
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if (base.IsOwner)
+        {
+            
+        }
+        else
+        {
+            scoreBoardUI.SetActive(false);
+            teamSelectorUI.SetActive(false);
+            buyMenuUI.SetActive(false);
+            hudUI.SetActive(false);
+
+            gameObject.GetComponent<UIPlayerGame>().enabled = false;
+        }
     }
 
     public void ToggleTeamSelector()

@@ -30,7 +30,6 @@ public class C4 : Weapon
             _bridge = other.GetComponent<PlayerBridge>();
             if (_bridge.player.PlayerTeam == Player.PlayerTeams.T)
             {
-                Debug.Log("T picked up bomb");
                 _bridge.player.ownedWeapons.HasBomb = true;
                 _physicsCollider.enabled = false;
                 BombDown = false;

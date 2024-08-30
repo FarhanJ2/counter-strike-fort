@@ -26,6 +26,21 @@ public class PlayerCam : NetworkBehaviour
 
     // NETWORK VARS && OWNERSHIP FUNCTIONS
     [SerializeField] private Camera playerCamera, weaponCamera, uiCamera;
+    
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (base.IsOwner)
+        {
+            Debug.Log("Player Cam Client Init");
+        }
+        else
+        {
+            // disables all other player controllers so the player doesnt control multiple players
+            gameObject.GetComponent<PlayerCam>().enabled = false;
+        }
+    }
+    
     private void Start()
     {
         if (playerCamera == null || weaponCamera == null || uiCamera == null) {

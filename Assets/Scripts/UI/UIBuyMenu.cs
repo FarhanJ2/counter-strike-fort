@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using FishNet.Object;
 using TMPro;
 using UnityEngine;
 
-public class UIBuyMenu : MonoBehaviour
+public class UIBuyMenu : NetworkBehaviour
 {
     // [SerializeField] private TMP_Text _playerMoneyText;
     [SerializeField] private GameObject _ctWeaponHolder, _tWeaponHolder;
@@ -27,6 +28,15 @@ public class UIBuyMenu : MonoBehaviour
         {
             _ctWeaponHolder.SetActive(false);
             _tWeaponHolder.SetActive(true);
+        }
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (!base.IsOwner)
+        {
+            gameObject.GetComponent<UIBuyMenu>().enabled = false;
         }
     }
 
