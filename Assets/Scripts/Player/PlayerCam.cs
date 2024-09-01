@@ -30,14 +30,10 @@ public class PlayerCam : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (base.IsOwner)
-        {
-            Debug.Log("Player Cam Client Init");
-        }
-        else
+        if (!IsOwner)
         {
             // disables all other player controllers so the player doesnt control multiple players
-            gameObject.GetComponent<PlayerCam>().enabled = false;
+            gameObject.GetComponent<PlayerCam>().enabled = false; 
         }
     }
     
@@ -77,6 +73,21 @@ public class PlayerCam : NetworkBehaviour
         _bridge.InputManager.PlayerControls.Movement.Crouch.started += _ => {
             _isCrouching = !_isCrouching;
         };
+
+        _bridge.InputManager.PlayerControls.Debug.ToggleCursorLock.started += _ => ToggleLockedCursor();
+    }
+
+    private void ToggleLockedCursor()
+    {
+        Cursor.visible = !Cursor.visible;
+        if (Cursor.visible)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     private void Update()

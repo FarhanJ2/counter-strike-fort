@@ -144,7 +144,6 @@ GameObject:
   m_Component:
   - component: {fileID: 115368517}
   - component: {fileID: 115368516}
-  - component: {fileID: 115368518}
   m_Layer: 0
   m_Name: ScoreboardManager
   m_TagString: Untagged
@@ -179,52 +178,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &115368518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115368515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 0
-  <ComponentIndex>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  <PredictedOwner>k__BackingField: {fileID: 0}
-  _networkBehaviours: []
-  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
-  <SerializedNestedNetworkObjects>k__BackingField: []
-  _isNetworked: 1
-  _isSpawnable: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  _enablePrediction: 0
-  _predictionType: 0
-  _graphicalObject: {fileID: 0}
-  _detachGraphicalObject: 0
-  _enableStateForwarding: 1
-  _networkTransform: {fileID: 0}
-  _ownerInterpolation: 1
-  _ownerSmoothedProperties: 255
-  _adaptiveInterpolation: 3
-  _spectatorSmoothedProperties: 255
-  _spectatorInterpolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 0
-  <SceneId>k__BackingField: 463608825
-  SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    LocalScale: {x: 0, y: 0, z: 0}
 --- !u!1 &156549068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,7 +1689,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 28542
+    surfaceParameter: 25456
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -481722049672070982
@@ -1907,6 +1860,7 @@ GameObject:
   - component: {fileID: 736110525}
   - component: {fileID: 736110524}
   - component: {fileID: 736110526}
+  - component: {fileID: 736110527}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -1926,6 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a9694abb74ebb4a914e66f17fde13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 736110527}
+  _networkObjectCache: {fileID: 0}
   gameSounds:
   - {fileID: 8300000, guid: febe638e86e50dd4faa6621798ff6585, type: 3}
   - {fileID: 8300000, guid: 1a8e29c4274270f4b80480b6c0d5256d, type: 3}
@@ -2047,6 +2004,52 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &736110527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736110523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  <PredictedOwner>k__BackingField: {fileID: 0}
+  _networkBehaviours: []
+  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
+  <SerializedNestedNetworkObjects>k__BackingField: []
+  _isNetworked: 1
+  _isSpawnable: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 0
+  <SceneId>k__BackingField: 469467135
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
+    LocalScale: {x: 0, y: 0, z: 0}
 --- !u!1 &736575786
 GameObject:
   m_ObjectHideFlags: 17
@@ -3135,7 +3138,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 28546
+    surfaceParameter: 25522
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -481722049672070982
@@ -5149,6 +5152,7 @@ GameObject:
   - component: {fileID: 1502717330}
   - component: {fileID: 1502717329}
   - component: {fileID: 1502717331}
+  - component: {fileID: 1502717332}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5168,8 +5172,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63357b3157aa9154d87bd4f31bb85af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 1502717331}
+  _networkObjectCache: {fileID: 0}
+  _players:
+    _value: []
+  _c4Planted:
+    _value: 0
+  _c4Exploded:
+    _value: 0
+  _ctWins:
+    _value: 0
+  _tWins:
+    _value: 0
+  _totalRounds:
+    _value: 0
+  _ctPlayersAlive:
+    _value: 0
+  _tPlayersAlive:
+    _value: 0
+  _roundPhase:
+    _value: 0
+  _timeRemaining:
+    _value: 0
+  _timerRunning:
+    _value: 0
   freezeTime: 2
-  roundTime: 120
+  roundTime: 3
   bombTime: 40
   afterRoundEnd: 5
 --- !u!4 &1502717330
@@ -5233,6 +5262,21 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     LocalScale: {x: 0, y: 0, z: 0}
+--- !u!114 &1502717332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502717328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []
 --- !u!1001 &1549936325
 PrefabInstance:
   m_ObjectHideFlags: 0

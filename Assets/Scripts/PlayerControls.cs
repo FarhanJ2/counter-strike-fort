@@ -500,6 +500,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""1299809e-d40d-4b5a-9ed9-c9962d0d8858"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleCursorLock"",
+                    ""type"": ""Button"",
+                    ""id"": ""829c5970-350f-41ed-b4e9-cb1d1b51779f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""21fde9df-e353-4dff-afdb-bc1891ca6f25"",
+                    ""path"": ""<Mouse>/forwardButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleCursorLock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -531,6 +559,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Inventory_Slot3 = m_Inventory.FindAction("Slot3", throwIfNotFound: true);
         m_Inventory_Slot4 = m_Inventory.FindAction("Slot4", throwIfNotFound: true);
         m_Inventory_Slot5 = m_Inventory.FindAction("Slot5", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_ToggleCursorLock = m_Debug.FindAction("ToggleCursorLock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -892,6 +923,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
+    private readonly InputAction m_Debug_ToggleCursorLock;
+    public struct DebugActions
+    {
+        private @PlayerControls m_Wrapper;
+        public DebugActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleCursorLock => m_Wrapper.m_Debug_ToggleCursorLock;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void AddCallbacks(IDebugActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DebugActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Add(instance);
+            @ToggleCursorLock.started += instance.OnToggleCursorLock;
+            @ToggleCursorLock.performed += instance.OnToggleCursorLock;
+            @ToggleCursorLock.canceled += instance.OnToggleCursorLock;
+        }
+
+        private void UnregisterCallbacks(IDebugActions instance)
+        {
+            @ToggleCursorLock.started -= instance.OnToggleCursorLock;
+            @ToggleCursorLock.performed -= instance.OnToggleCursorLock;
+            @ToggleCursorLock.canceled -= instance.OnToggleCursorLock;
+        }
+
+        public void RemoveCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDebugActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DebugActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     public interface IMovementActions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -922,5 +999,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSlot3(InputAction.CallbackContext context);
         void OnSlot4(InputAction.CallbackContext context);
         void OnSlot5(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnToggleCursorLock(InputAction.CallbackContext context);
     }
 }

@@ -478,6 +478,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "1299809e-d40d-4b5a-9ed9-c9962d0d8858",
+            "actions": [
+                {
+                    "name": "ToggleCursorLock",
+                    "type": "Button",
+                    "id": "829c5970-350f-41ed-b4e9-cb1d1b51779f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "21fde9df-e353-4dff-afdb-bc1891ca6f25",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCursorLock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

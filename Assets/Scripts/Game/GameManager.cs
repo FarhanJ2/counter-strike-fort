@@ -1,30 +1,42 @@
 using System;
+using FishNet.CodeGenerating;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public Player[] Players { get; private set; }
 
-    public bool C4Planted { get; private set; }
-    public bool C4Exploded { get; private set; }
-    public int CtWins { get; private set; }
-    public int TWins { get; private set; }
-    public int TotalRounds { get; private set; }
+    [AllowMutableSyncType] private SyncVar<Player[]> _players;
+    [AllowMutableSyncType] private SyncVar<bool> _c4Planted, _c4Exploded;
+    [AllowMutableSyncType] private SyncVar<int> _ctWins, _tWins;
+    [AllowMutableSyncType] private SyncVar<int> _totalRounds;
+    [AllowMutableSyncType] private SyncVar<int> _ctPlayersAlive, _tPlayersAlive;
+    [AllowMutableSyncType] private SyncVar<int> _roundPhase; // 0: Freeze Time, 1: Round Time, 2: Ended
+    [AllowMutableSyncType] private SyncVar<float> _timeRemaining;
+    [AllowMutableSyncType] private SyncVar<bool> _timerRunning;
+    
+    public Player[] Players { get => _players.Value; private set => _players.Value = value; }
 
-    public int CtPlayersAlive { get; private set; }
-    public int TPlayersAlive { get; private set; }
+    public bool C4Planted { get => _c4Planted.Value; private set => _c4Planted.Value = value; }
+    public bool C4Exploded { get => _c4Exploded.Value; private set => _c4Exploded.Value = value; }
+    public int CtWins { get => _ctWins.Value; private set => _ctWins.Value = value; }
+    public int TWins { get => _tWins.Value; private set => _tWins.Value = value; }
+    public int TotalRounds { get => _totalRounds.Value; private set => _totalRounds.Value = value; }
+
+    public int CtPlayersAlive { get => _ctPlayersAlive.Value; private set => _ctPlayersAlive.Value = value; }
+    public int TPlayersAlive { get => _tPlayersAlive.Value; private set => _tPlayersAlive.Value = value; }
+    public int RoundPhase { get => _roundPhase.Value; private set => _roundPhase.Value = value; }
+    public float TimeRemaining { get => _timeRemaining.Value; private set => _timeRemaining.Value = value; }
+    public bool TimerRunning {get => _timerRunning.Value; private set => _timerRunning.Value = value; }
 
     public float freezeTime = 15f;
     public float roundTime = 10f;
     public float bombTime = 40f;
     public float afterRoundEnd = 5f;
-    private float _timeRemaining;
-    private bool _timerRunning = false;
-
-    private int _roundPhase = 0; // 0: Freeze Time, 1: Round Time, 2: Ended
     
     private static event Action OnMajorEvent; 
     
@@ -45,7 +57,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
 
         Player.OnHealthChanged += SetPlayerCounts;
@@ -53,21 +65,33 @@ public class GameManager : MonoBehaviour
 
         CtWins = 0;
         TWins = 0;
+        RoundPhase = 0;
+        TimerRunning = false;
     }
+
+    // private void Start()
+    // {
+    //     if (!base.IsServerInitialized)
+    //     {
+    //         Destroy(gameObject);
+    //     }
+    // }
 
     private void OnDisable()
     {
         Player.OnHealthChanged -= SetPlayerCounts;
     }
-
+    
+    [ObserversRpc]
     public void StartRound()
     {
+        Debug.Log("Start round");
         AudioManager.Instance.PlaySound(Random.Range(0, 1) > .5
             ? AudioManager.VO.LETS_GO_CT_0
             : AudioManager.VO.LETS_GO_CT_1);
-        _roundPhase = 1;
-        _timeRemaining = roundTime;
-        Debug.Log("Round time started. Time remaining: " + _timeRemaining);
+        RoundPhase = 1;
+        TimeRemaining = roundTime;
+        Debug.Log("Round time started. Time remaining: " + TimeRemaining);
         DisablePlayers(false);
     }
 
@@ -75,7 +99,8 @@ public class GameManager : MonoBehaviour
     {
         Players = FindObjectsOfType<Player>();
     }
-
+    
+    [ServerRpc]
     public void CheckForRoundWin() // run on an event so everytime a player dies bomb planted explodes etc this checks not on update
     {
         if (CtPlayersAlive == 0) // CT players are all dead
@@ -99,32 +124,35 @@ public class GameManager : MonoBehaviour
             EndRound(); // End round
         }
     }
-
+    
+    [ObserversRpc]
     private void EndRound()
     {
-        _timerRunning = false;
+        TimerRunning = false;
         Debug.Log("Round ended");
     }
-
+    
     private void RoundTimer()
     {
-        _timeRemaining -= Time.deltaTime;
-        if (_timeRemaining <= 0)
+        // Debug.Log("Timer Running: " + TimerRunning + ", TimeRemaining: " + TimeRemaining);
+        TimeRemaining -= Time.deltaTime;
+        // Debug.Log("Time after decrement: " + TimeRemaining);
+        if (TimeRemaining <= 0)
         {
-            _timeRemaining = 0;
+            TimeRemaining = 0;
 
-            if (_roundPhase == 0)
+            if (RoundPhase == 0)
             {
                 StartRound();
             }
-            else if (_roundPhase == 1) // ct win by time ending
+            else if (RoundPhase == 1) // ct win by time ending
             {
                 EndRound();
                 AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
             }
         }
     }
-
+    
     private void DisablePlayers(bool freeze)
     {
         foreach (Player player in Players)
@@ -132,9 +160,12 @@ public class GameManager : MonoBehaviour
             player.GetComponent<PlayerBridge>().playerMovement.canMove = !freeze;
         }
     }
-
+    
+    [ServerRpc(RequireOwnership = false)] 
     public void SetPlayerCounts(Player changedPlayer)
     {
+        Debug.Log("Setting the player counts");
+        
         CtPlayersAlive = 0;
         TPlayersAlive = 0;
 
@@ -150,28 +181,69 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (_roundPhase == 0 && (CtPlayersAlive > 0 || TPlayersAlive > 0))
+        if (RoundPhase == 0 && (CtPlayersAlive > 0 || TPlayersAlive > 0))
         {
-            _timeRemaining = freezeTime;
-            _timerRunning = true;
+            TimeRemaining = freezeTime;
+            TimerRunning = true;
             DisablePlayers(true);
         }
     }
 
+    private bool startRan = false;
+    private void CheckPlayerCounts()
+    {
+        if (Players == null || Players.Length == 0)
+        {
+            return;
+        }
+
+        int ctAliveCount = 0;
+        int tAliveCount = 0;
+
+        foreach (var player in Players)
+        {
+            if (player.PlayerTeam == Player.PlayerTeams.CT && player.playerHealth > 0)
+            {
+                ctAliveCount++;
+            }
+            else if (player.PlayerTeam == Player.PlayerTeams.T && player.playerHealth > 0)
+            {
+                tAliveCount++;
+            }
+        }
+
+        // Update the player counts
+        CtPlayersAlive = ctAliveCount;
+        TPlayersAlive = tAliveCount;
+        
+        if (RoundPhase == 0 && (CtPlayersAlive > 0 || TPlayersAlive > 0) && !startRan)
+        {
+            startRan = true;
+            TimeRemaining = freezeTime;
+            TimerRunning = true;
+            DisablePlayers(true);
+        }
+        
+        // Debug.Log($"CT Players Alive: {CtPlayersAlive}, T Players Alive: {TPlayersAlive}");
+    }
+
     public string GetTimerDisplay()
     {
-        int minutes = Mathf.FloorToInt(_timeRemaining / 60);
-        int seconds = Mathf.FloorToInt(_timeRemaining % 60);
+        int minutes = Mathf.FloorToInt(TimeRemaining / 60);
+        int seconds = Mathf.FloorToInt(TimeRemaining % 60);
         return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     private void Update()
     {
-        if (_timerRunning)
+        if (!base.IsServerInitialized) return;
+        
+        if (TimerRunning)
         {
             RoundTimer();
         }
 
         FindAllPlayers();
+        CheckPlayerCounts();
     }
 }

@@ -829,6 +829,7 @@ GameObject:
   - component: {fileID: 6082854120094637719}
   - component: {fileID: 878614228672907942}
   - component: {fileID: 6357023633677461869}
+  - component: {fileID: 1607264564962840544}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1121,6 +1122,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapons: []
   BombHolder: {fileID: 4254526404880515746}
+--- !u!114 &1607264564962840544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456878994986766728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions: []
 --- !u!1 &816169886646628957
 GameObject:
   m_ObjectHideFlags: 0
@@ -7376,9 +7392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24894cfe63c816c479297cbc7de01454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 3699080982396454986}
-  _networkObjectCache: {fileID: 0}
   playerHolderPrefab: {fileID: 7954489336832073872, guid: dc72edc918d20f7479dc16d4ca9e892f, type: 3}
   teamIcon: {fileID: 134276500984436866}
   teamText: {fileID: 6999666896676692341}
