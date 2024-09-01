@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using FishNet.Object;
 using TMPro;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ class WeaponAttr: Attribute
     public int WeaponPrice { get; private set; }
 }
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : NetworkBehaviour
 {
     public WeaponName weaponName;
     public int ammoCapacity;

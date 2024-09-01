@@ -81,10 +81,15 @@ public class GameManager : NetworkBehaviour
     {
         Player.OnHealthChanged -= SetPlayerCounts;
     }
+
+    private bool startRoundRan = false;
     
     [ObserversRpc]
     public void StartRound()
     {
+        if (startRoundRan) return;
+        
+        startRoundRan = true;
         Debug.Log("Start round");
         AudioManager.Instance.PlaySound(Random.Range(0, 1) > .5
             ? AudioManager.VO.LETS_GO_CT_0
@@ -124,10 +129,16 @@ public class GameManager : NetworkBehaviour
             EndRound(); // End round
         }
     }
+
+    private bool endRoundRan = false;
     
     [ObserversRpc]
     private void EndRound()
     {
+        if (endRoundRan) return;
+
+        endRoundRan = true;
+        AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
         TimerRunning = false;
         Debug.Log("Round ended");
     }
@@ -148,7 +159,7 @@ public class GameManager : NetworkBehaviour
             else if (RoundPhase == 1) // ct win by time ending
             {
                 EndRound();
-                AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
+                
             }
         }
     }
