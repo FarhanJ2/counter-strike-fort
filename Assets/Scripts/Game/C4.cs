@@ -28,7 +28,6 @@ public class C4 : Weapon
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Picked up by player");
             _bridge = other.GetComponent<PlayerBridge>();
             if (_bridge.player.PlayerTeam == Player.PlayerTeams.T)
             {

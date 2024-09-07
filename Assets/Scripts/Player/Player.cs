@@ -37,6 +37,7 @@ public class Player : NetworkBehaviour
         _bridge = GetComponent<PlayerBridge>();
         OnCreateClient();
         PlayerMoney = 8000;
+        PlayerTeam = PlayerTeams.UNASSIGNED;
     }
 
     public override void OnStartClient()
@@ -55,6 +56,8 @@ public class Player : NetworkBehaviour
 
     private void OnCreateClient() // when the player object is created not on SPAWN
     {
+        PlayerTeam = PlayerTeams.UNASSIGNED;
+        _bridge.playerMovement.canMove = false;
         playerHealth = startingHealth;
         playerUI.ToggleTeamSelector();
         
@@ -101,7 +104,9 @@ public class Player : NetworkBehaviour
         
         
         // tp player to a spawn
-        gameObject.transform.position = SpawnManager.Instance.GetFreeSpawn(PlayerTeam);
+        // gameObject.transform.position = SpawnManager.Instance.GetFreeSpawn(PlayerTeam);
+        SpawnManager.Instance.GetFreeSpawnServer(this); // this moves player to the spawn
+        _bridge.playerMovement.canMove = true;
         
         // document the player models later
         if (PlayerTeam == PlayerTeams.CT)

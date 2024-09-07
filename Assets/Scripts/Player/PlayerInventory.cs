@@ -56,28 +56,33 @@ public class PlayerInventory : NetworkBehaviour
         }
             
         
-        DropObjectServer(_currentWeaponHolding);
+        DropObjectServer(_currentWeaponHolding, this);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DropObjectServer(Weapon.WeaponName weapon)
+    private void DropObjectServer(Weapon.WeaponName weapon, PlayerInventory inv)
     {
-        DropObjectObserver(weapon);
+        DropObjectObserver(weapon, inv);
     }
 
     [ObserversRpc]
-    private void DropObjectObserver(Weapon.WeaponName weapon)
+    private void DropObjectObserver(Weapon.WeaponName weapon, PlayerInventory inv)
     {
+        if (inv._bridge == null) // return if not owner
+        {
+            return;
+        }
+        
         SetHoldingWeapon(-1); // -1 used to disarm player, player is holding no weapons
         
         if (weapon == Weapon.WeaponName.C4)
         {
             C4 c4 = FindObjectOfType<C4>();
-            _bridge.player.ownedWeapons.HasBomb = false;
+            inv._bridge.player.ownedWeapons.HasBomb = false;
             c4.DropBomb();
         }
         
-        _currentWeaponHolding = Weapon.WeaponName.NONE;
+        inv._currentWeaponHolding = Weapon.WeaponName.NONE;
         // obj.transform.parent = null;
         //
         // if (obj.GetComponent<Rigidbody>() != null)

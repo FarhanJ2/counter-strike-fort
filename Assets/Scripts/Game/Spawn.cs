@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class Spawn : MonoBehaviour
 {
     public bool IsOccupied { get; private set; }
-    
+
     public Vector3 GetSpawnPosition()
     {
         return gameObject.transform.position;
