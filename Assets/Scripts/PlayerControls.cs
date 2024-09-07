@@ -441,6 +441,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""73240e3c-2cf5-4af2-af8b-dc46aa4b6098"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""b45a6cf1-90eb-447d-986a-1c40c4f83f31"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -496,6 +514,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Slot5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07d77568-1927-48f4-b110-41450fcec9ca"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0750205a-50d3-4690-8685-6c46fe8fd3f2"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -559,6 +599,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Inventory_Slot3 = m_Inventory.FindAction("Slot3", throwIfNotFound: true);
         m_Inventory_Slot4 = m_Inventory.FindAction("Slot4", throwIfNotFound: true);
         m_Inventory_Slot5 = m_Inventory.FindAction("Slot5", throwIfNotFound: true);
+        m_Inventory_Pickup = m_Inventory.FindAction("Pickup", throwIfNotFound: true);
+        m_Inventory_Drop = m_Inventory.FindAction("Drop", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_ToggleCursorLock = m_Debug.FindAction("ToggleCursorLock", throwIfNotFound: true);
@@ -854,6 +896,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Slot3;
     private readonly InputAction m_Inventory_Slot4;
     private readonly InputAction m_Inventory_Slot5;
+    private readonly InputAction m_Inventory_Pickup;
+    private readonly InputAction m_Inventory_Drop;
     public struct InventoryActions
     {
         private @PlayerControls m_Wrapper;
@@ -863,6 +907,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Slot3 => m_Wrapper.m_Inventory_Slot3;
         public InputAction @Slot4 => m_Wrapper.m_Inventory_Slot4;
         public InputAction @Slot5 => m_Wrapper.m_Inventory_Slot5;
+        public InputAction @Pickup => m_Wrapper.m_Inventory_Pickup;
+        public InputAction @Drop => m_Wrapper.m_Inventory_Drop;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -887,6 +933,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Slot5.started += instance.OnSlot5;
             @Slot5.performed += instance.OnSlot5;
             @Slot5.canceled += instance.OnSlot5;
+            @Pickup.started += instance.OnPickup;
+            @Pickup.performed += instance.OnPickup;
+            @Pickup.canceled += instance.OnPickup;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
@@ -906,6 +958,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Slot5.started -= instance.OnSlot5;
             @Slot5.performed -= instance.OnSlot5;
             @Slot5.canceled -= instance.OnSlot5;
+            @Pickup.started -= instance.OnPickup;
+            @Pickup.performed -= instance.OnPickup;
+            @Pickup.canceled -= instance.OnPickup;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -999,6 +1057,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSlot3(InputAction.CallbackContext context);
         void OnSlot4(InputAction.CallbackContext context);
         void OnSlot5(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
     public interface IDebugActions
     {

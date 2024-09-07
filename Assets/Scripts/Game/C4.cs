@@ -1,12 +1,13 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class C4 : Weapon
 {
+    [SerializeField] private BoxCollider _physicsCollider, _triggerCollider;
     [SerializeField] private GameObject _model;
-    [SerializeField] private BoxCollider _physicsCollider;
+    [SerializeField] private Rigidbody _rb;
     public bool BombDown { get; set; }
     private PlayerBridge _bridge;
 
@@ -19,14 +20,15 @@ public class C4 : Weapon
 
     private void Start()
     {
+        // _bombDown.OnChange += ChangeBombDown;
         BombDown = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Thing entered trigger");
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Picked up by player");
             _bridge = other.GetComponent<PlayerBridge>();
             if (_bridge.player.PlayerTeam == Player.PlayerTeams.T)
             {
@@ -39,15 +41,54 @@ public class C4 : Weapon
 
     private void Update()
     {
+        _rb.isKinematic = !BombDown; // need to find a way to sync this across the network
+        
         if (!BombDown)
         {
-            transform.position = _bridge.PlayerInventory.BombHolder.transform.position;
+            SetBombOnPlayerServer(gameObject, _bridge.PlayerInventory.BombHolder.transform.position, _bridge.PlayerInventory.BombHolder.transform.rotation);
         }
     }
 
-    private void PickupBomb()
+    [ServerRpc(RequireOwnership = false)]
+    private void SetBombOnPlayerServer(GameObject bomb, Vector3 position, Quaternion rotation)
     {
-        // BombDown = false;
-        // _model.SetActive(false);
+        SetBombOnPlayerObserver(bomb, position, rotation);
+    }
+
+    [ObserversRpc]
+    private void SetBombOnPlayerObserver(GameObject bomb, Vector3 position, Quaternion rotation)
+    {
+        _rb.isKinematic = true;
+        bomb.transform.position = position;
+        bomb.transform.rotation = rotation;
+    }
+    
+    public void DropBomb()
+    {
+        DropBombServer(gameObject);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DropBombServer(GameObject obj)
+    {
+        Debug.Log("Drop bomb logic ran");
+        DropBombObserver(obj);
+    }
+
+    [ObserversRpc]
+    private void DropBombObserver(GameObject obj)
+    {
+        obj.GetComponentInChildren<MeshRenderer>().enabled = true;
+        _physicsCollider.enabled = true;
+        StartCoroutine(ToggleWithDelayBombDown());
+        _rb.isKinematic = false;
+    }
+
+    private IEnumerator ToggleWithDelayBombDown()
+    {
+        BombDown = true;
+        _triggerCollider.enabled = false;
+        yield return new WaitForSeconds(3f);
+        _triggerCollider.enabled = true;
     }
 }

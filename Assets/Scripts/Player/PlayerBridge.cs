@@ -1,14 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerBridge : MonoBehaviour
+public class PlayerBridge : NetworkBehaviour
 {
+    // public override void OnStartClient()
+    // {
+    //     base.OnStartClient();
+    //     if (!base.IsOwner)
+    //     {
+    //         gameObject.GetComponent<PlayerBridge>().enabled = false;
+    //     }
+    // }
+
     // For all values that need to be accessed by EACH sub-set
     [Header("Player Files")] 
     public PlayerMovement playerMovement;
     public Player player;
-    public PlayerCam playerCamScript;
+    public PlayerCam PlayerCam;
     public InputManager InputManager;
     public PlayerSounds playerSounds;
     public PlayerInventory PlayerInventory;

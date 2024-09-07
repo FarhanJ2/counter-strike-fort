@@ -50,9 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfa145b6960f0a488e152c749d8ebbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4415322708702890909}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4415322708702890909}
   weaponName: 3
   ammoCapacity: 0
   magazineSize: 0
@@ -62,6 +62,8 @@ MonoBehaviour:
   isAutomatic: 0
   _model: {fileID: 8858437157436665237}
   _physicsCollider: {fileID: 5029618787921202426}
+  _triggerCollider: {fileID: 2496021108353636570}
+  _rb: {fileID: 6845977221340411919}
 --- !u!65 &5029618787921202426
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -147,7 +149,9 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   <PredictedOwner>k__BackingField: {fileID: 0}
-  _networkBehaviours: []
+  _networkBehaviours:
+  - {fileID: 5310883344391541265}
+  - {fileID: 1653626042382782797}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <SerializedNestedNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -169,14 +173,14 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 0
+  <PrefabId>k__BackingField: 1
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 6350836933272068209
   <SceneId>k__BackingField: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    LocalScale: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
 --- !u!114 &1653626042382782797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,9 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 4415322708702890909}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4415322708702890909}
   _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
@@ -203,7 +207,7 @@ MonoBehaviour:
   _enableTeleport: 0
   _teleportThreshold: 1
   _clientAuthoritative: 1
-  _sendToOwner: 1
+  _sendToOwner: 0
   _interval: 1
   _synchronizePosition: 1
   _positionSnapping:

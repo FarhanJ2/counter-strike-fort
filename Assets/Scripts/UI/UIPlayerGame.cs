@@ -49,7 +49,7 @@ public class UIPlayerGame : NetworkBehaviour
             Cursor.visible = false;
             _bridge.uiHud.ToggleHUD();
             scoreBoardUI.SetActive(false);
-            _bridge.playerCamScript.mouseEnabled = true;
+            _bridge.PlayerCam.mouseEnabled = true;
         };
         _bridge.InputManager.UI.UIPlayer.UIRightClick.started += _ =>
         {
@@ -57,7 +57,7 @@ public class UIPlayerGame : NetworkBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                _bridge.playerCamScript.mouseEnabled = false;
+                _bridge.PlayerCam.mouseEnabled = false;
             }
         };
         _bridge.InputManager.UI.UIGlobal.ToggleTeamSelector.started += _ => ToggleTeamSelector();
@@ -87,7 +87,7 @@ public class UIPlayerGame : NetworkBehaviour
 
     public void ToggleTeamSelector()
     {
-        _bridge.playerCamScript.mouseEnabled = buyMenuUI.activeSelf;
+        _bridge.PlayerCam.mouseEnabled = buyMenuUI.activeSelf;
         teamSelectorUI.SetActive(!teamSelectorUI.activeSelf);
     }
 
@@ -96,7 +96,7 @@ public class UIPlayerGame : NetworkBehaviour
         if (_bridge.player.InBuyZone)
         {
             bool isMenuActive = buyMenuUI.activeSelf;
-            _bridge.playerCamScript.mouseEnabled = isMenuActive;
+            _bridge.PlayerCam.mouseEnabled = isMenuActive;
             LockCursor(isMenuActive);
             _bridge.uiHud.ToggleHUD();
             buyMenuUI.SetActive(!isMenuActive);
@@ -104,7 +104,7 @@ public class UIPlayerGame : NetworkBehaviour
         else
         {
             buyMenuUI.SetActive(false);
-            _bridge.playerCamScript.mouseEnabled = true;
+            _bridge.PlayerCam.mouseEnabled = true;
             LockCursor(true);
         }
     }

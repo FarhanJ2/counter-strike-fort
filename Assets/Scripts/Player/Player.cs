@@ -115,7 +115,7 @@ public class Player : NetworkBehaviour
 
         _bridge.cameraHolder.SetActive(true);
         _bridge.playerMovement.canMove = true;
-        _bridge.playerCamScript.mouseEnabled = true;
+        _bridge.PlayerCam.mouseEnabled = true;
         
         OnHealthChanged?.Invoke(this);
     }
