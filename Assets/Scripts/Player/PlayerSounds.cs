@@ -7,9 +7,10 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private AudioClip[] concreteSounds, woodSounds, dirtSounds, sandSounds;
     [Header("Voice Lines")]
     [SerializeField] private AudioClip[] ctVo, tVo;
+    [SerializeField] private AudioClip[] fallingSounds, landingSounds;
 
     [Header("UI")] [SerializeField] private AudioClip[] buyMenu; 
-    private AudioSource _source;
+    [SerializeField] private AudioSource _source, _sourcePain;
 
     public bool IsPlaying => _source.isPlaying;
 
@@ -76,6 +77,11 @@ public class PlayerSounds : MonoBehaviour
         _source = GetComponent<AudioSource>();
     }
 
+    public void StopSound()
+    {
+        _sourcePain.Stop();
+    }
+
     public void PlayFootstep(string floorType)
     {
         switch (floorType)
@@ -105,5 +111,17 @@ public class PlayerSounds : MonoBehaviour
     {
         AudioClip clip = buyMenu[Random.Range(0, buyMenu.Length)];
         _source.PlayOneShot(clip);
+    }
+
+    public void PlayFallingSound()
+    {
+        AudioClip clip = fallingSounds[Random.Range(0, fallingSounds.Length)];
+        _sourcePain.PlayOneShot(clip);
+    }
+
+    public void PlayLandingSound()
+    {
+        AudioClip clip = landingSounds[Random.Range(0, landingSounds.Length)];
+        _sourcePain.PlayOneShot(clip);
     }
 }

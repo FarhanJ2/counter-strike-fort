@@ -339,6 +339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7430487188883386846}
   - component: {fileID: 8145036738815726026}
+  - component: {fileID: 8854638799136130266}
   - component: {fileID: 3435696873903593741}
   m_Layer: 0
   m_Name: PlayerSound
@@ -363,6 +364,102 @@ Transform:
   m_Father: {fileID: 5784573436507212959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8145036738815726026
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147646997650358610}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &8854638799136130266
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -536,10 +633,21 @@ MonoBehaviour:
   tVo:
   - {fileID: 8300000, guid: 022f278968efbcd478b69dcaf0380bd3, type: 3}
   - {fileID: 8300000, guid: f1115565d3b0eff44889d5a6caad5868, type: 3}
+  fallingSounds:
+  - {fileID: 8300000, guid: e528d6b252490d9449770de8e8e8333a, type: 3}
+  - {fileID: 8300000, guid: 36604b2b29c4c134ca44483a1ca4ab77, type: 3}
+  - {fileID: 8300000, guid: 6b772ba3b82c9fd4184b9104606bc168, type: 3}
+  landingSounds:
+  - {fileID: 8300000, guid: 8c6f763d9c7019e42bcdf44fd1a2e786, type: 3}
+  - {fileID: 8300000, guid: 70c8df6a09a9317479a491471d7af1c8, type: 3}
+  - {fileID: 8300000, guid: a4fdcd5f2496bec4aa699584e7be4fa9, type: 3}
+  - {fileID: 8300000, guid: 697a68b1a325780419e5787a0b92ad61, type: 3}
   buyMenu:
   - {fileID: 8300000, guid: c8334c12a4adac04c94c6be887287976, type: 3}
   - {fileID: 8300000, guid: 1fe85d0b049d4dd4b95c1cf5428b8fc0, type: 3}
   - {fileID: 8300000, guid: 94438cf8a1f2a3046bef26b101d24ac1, type: 3}
+  _source: {fileID: 8145036738815726026}
+  _sourcePain: {fileID: 8854638799136130266}
 --- !u!1 &258950253186284259
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1108,8 @@ MonoBehaviour:
   weaponCamera: {fileID: 8021054624566017187}
   canMove: 0
   isGrounded: 0
+  fallDamageThreshold: 10
+  fallDamageMultiplier: 2
 --- !u!114 &3699080982396454986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1132,7 +1242,6 @@ MonoBehaviour:
   _pickupLayer:
     serializedVersion: 2
     m_Bits: 0
-  _bombHoldPosition: {fileID: 0}
 --- !u!114 &1607264564962840544
 MonoBehaviour:
   m_ObjectHideFlags: 0
