@@ -67,6 +67,8 @@ public class GameManager : NetworkBehaviour
         TWins = 0;
         RoundPhase = 0;
         TimerRunning = false;
+        C4Planted = false;
+        C4Exploded = false;
     }
 
     // private void Start()
@@ -91,7 +93,7 @@ public class GameManager : NetworkBehaviour
         
         startRoundRan = true;
         Debug.Log("Start round");
-        AudioManager.Instance.PlaySound(Random.Range(0, 1) > .5
+        AudioManager.Instance.PlaySound(Random.Range(0, 2) > .5
             ? AudioManager.VO.LETS_GO_CT_0
             : AudioManager.VO.LETS_GO_CT_1);
         RoundPhase = 1;
@@ -104,8 +106,8 @@ public class GameManager : NetworkBehaviour
     {
         Players = FindObjectsOfType<Player>();
     }
-    
-    [ServerRpc]
+
+    [ServerRpc(RequireOwnership = false)]
     public void CheckForRoundWin() // run on an event so everytime a player dies bomb planted explodes etc this checks not on update
     {
         if (CtPlayersAlive == 0) // CT players are all dead
@@ -138,7 +140,7 @@ public class GameManager : NetworkBehaviour
         if (endRoundRan) return;
 
         endRoundRan = true;
-        AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
+        // AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
         TimerRunning = false;
         Debug.Log("Round ended");
     }
@@ -164,6 +166,7 @@ public class GameManager : NetworkBehaviour
         }
     }
     
+    [ObserversRpc]
     private void DisablePlayers(bool freeze)
     {
         foreach (Player player in Players)
@@ -256,5 +259,6 @@ public class GameManager : NetworkBehaviour
 
         FindAllPlayers();
         CheckPlayerCounts();
+        // CheckForRoundWin();
     }
 }

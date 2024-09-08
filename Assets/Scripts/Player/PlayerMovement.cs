@@ -146,7 +146,7 @@ public class PlayerMovement : NetworkBehaviour
                 float fallDamage = Mathf.Abs(fallSpeed) * fallDamageMultiplier;
                 Debug.Log("Player took fall damage: " + fallDamage);
 
-                _bridge.player.TakeDamage((int)fallDamage);
+                _bridge.player.TakeDamage((int)fallDamage, "fall damage");
             }
             
             if (jumped) // play landing sound even if player didnt receive fall damage

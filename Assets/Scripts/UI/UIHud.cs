@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class UIHud : NetworkBehaviour
 {
+    [SerializeField] private GameObject deathScreen;
+    [SerializeField] private TMP_Text deathText;
+
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private TMP_Text _defuseKitText;
     [SerializeField] private TMP_Text _moneyText;
@@ -25,14 +28,25 @@ public class UIHud : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (base.IsOwner)
-        {
-            
-        }
-        else
-        {
-            gameObject.GetComponent<UIHud>().enabled = false;
-        }
+        if (!IsOwner)
+            enabled = false;
+    }
+
+    public void ToggleDeathScreen(bool show)
+    {
+        _healthText.enabled = show;
+        _defuseKitText.enabled = show;
+        _moneyText.enabled = show;
+        _winsText.enabled = show;
+        _playersAliveText.enabled = show;
+        _roundTimerText.enabled = show;
+
+        deathScreen.SetActive(show);
+    }
+
+    public void SetDeathText(string deathReason)
+    {
+        deathText.text = deathReason;
     }
 
     private void Update()
@@ -40,7 +54,8 @@ public class UIHud : NetworkBehaviour
         if (_bridge.player.PlayerTeam != Player.PlayerTeams.CT || !_bridge.player.ownedWeapons.HasKit)
         {
             _defuseKitText.text = "";
-        } else if (_bridge.player.ownedWeapons.HasKit)
+        }
+        else if (_bridge.player.ownedWeapons.HasKit)
         {
             _defuseKitText.text = "You have a kit";
         }

@@ -43,14 +43,13 @@ public class Player : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        if (base.IsOwner)
+        if (!IsOwner)
         {
-            Debug.Log("Player Movement Client Init");
-        }
-        else
-        {
-            // disables all other player controllers so the player doesnt control multiple players
-            // gameObject.GetComponent<Player>().enabled = false;
+            _bridge.playerCamera.enabled = false;
+            _bridge.weaponCamera.enabled = false;
+            _bridge.uiCamera.enabled = false;
+            _bridge.uiHud.enabled = false;
+            enabled = false;
         }
     }
 
@@ -69,13 +68,7 @@ public class Player : NetworkBehaviour
         _bridge.cameraHolder.SetActive(false);
     }
 
-    private void OnPlayerDeath()
-    {
-        PlayerDeaths++;
-        GameManager.InvokeMajorEvent();
-    }
-
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string damageFrom)
     {
         playerHealth -= damage;
         OnHealthChanged?.Invoke(this);
@@ -83,21 +76,45 @@ public class Player : NetworkBehaviour
         if (playerHealth <= 0)
         {
             playerHealth = 0;
-            Die();
+            Die(damageFrom);
         }
     }
 
-    private void Die()
+    private void Die(string deathReason)
     {
         // Instantiate() // drop weapon
+        if (ownedWeapons.HasBomb)
+        {
+            _bridge.PlayerInventory.DropItem(Weapon.WeaponName.C4);
+        }
+
+        _bridge.playerMovement.canMove = false;
+        _bridge.PlayerCam.mouseEnabled = false;
+        _bridge.uiHud.SetDeathText("You died to " + deathReason + ".");
+        _bridge.uiHud.ToggleDeathScreen(true);
         
         ownedWeapons.HasArmor = false;
         ownedWeapons.HasHelmet = false;
         ownedWeapons.CurrentPrimary = Weapon.WeaponName.NONE;
         ownedWeapons.CurrentSecondary = Weapon.WeaponName.NONE;
+        
+        PlayerDeaths++;
+        GameManager.InvokeMajorEvent();
+    }
+
+    public void AssignTeam(int teamId)
+    {
+        AssignTeamServer(teamId);
+        AssignTeamConfiguration(teamId);
     }
     
-    public void AssignTeam(int teamId)
+    [ServerRpc(RequireOwnership = false)]
+    private void AssignTeamServer(int teamId)
+    {
+        SetModelsObservers();
+    }
+    
+    private void AssignTeamConfiguration(int teamId)
     {
         PlayerTeam = teamId == 0 ? PlayerTeams.CT : PlayerTeams.T; // ct 0, t 1 for entire program
         playerUI.ToggleTeamSelector();
@@ -108,6 +125,21 @@ public class Player : NetworkBehaviour
         SpawnManager.Instance.GetFreeSpawnServer(this); // this moves player to the spawn
         _bridge.playerMovement.canMove = true;
         
+        _bridge.cameraHolder.SetActive(true);
+        _bridge.playerMovement.canMove = true;
+        _bridge.PlayerCam.mouseEnabled = true;
+        
+        OnHealthChanged?.Invoke(this);
+    }
+    
+    [ObserversRpc(BufferLast = true)] // add buffer last so all late joining players can see
+    private void SetModelsObservers()
+    {
+        foreach (GameObject model in _bridge.playerModels)
+        {
+            model.SetActive(false);
+        }
+        
         // document the player models later
         if (PlayerTeam == PlayerTeams.CT)
         {
@@ -117,12 +149,6 @@ public class Player : NetworkBehaviour
         {
             _bridge.playerModels[0].SetActive(true);
         }
-
-        _bridge.cameraHolder.SetActive(true);
-        _bridge.playerMovement.canMove = true;
-        _bridge.PlayerCam.mouseEnabled = true;
-        
-        OnHealthChanged?.Invoke(this);
     }
 }
 

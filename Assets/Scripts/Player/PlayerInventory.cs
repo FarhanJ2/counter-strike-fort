@@ -59,6 +59,11 @@ public class PlayerInventory : NetworkBehaviour
         DropObjectServer(_currentWeaponHolding, this);
     }
 
+    public void DropItem(Weapon.WeaponName weapon)
+    {
+        DropObjectServer(weapon, this);
+    }
+
     [ServerRpc(RequireOwnership = false)]
     private void DropObjectServer(Weapon.WeaponName weapon, PlayerInventory inv)
     {
