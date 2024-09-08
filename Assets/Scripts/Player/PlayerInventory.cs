@@ -31,6 +31,8 @@ public class PlayerInventory : NetworkBehaviour
         {
             enabled = false;
         }
+
+        _viewCam = _bridge.playerCamera;
     }
 
     private void Start()

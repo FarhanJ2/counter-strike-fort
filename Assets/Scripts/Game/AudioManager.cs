@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
 
     public enum Sound
     {
+        ROUND_DRAW,
         CT_WIN,
         T_WIN,
         BOMB_PL,

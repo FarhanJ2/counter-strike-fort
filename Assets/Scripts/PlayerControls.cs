@@ -355,6 +355,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Defuse"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc982b33-1dcd-4449-8fa3-f9addb9c615c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -388,6 +397,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Scope"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8798374e-de93-4501-a547-c990feac5487"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Defuse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -520,7 +540,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""07d77568-1927-48f4-b110-41450fcec9ca"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -592,6 +612,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Attack_Fire = m_Attack.FindAction("Fire", throwIfNotFound: true);
         m_Attack_Reload = m_Attack.FindAction("Reload", throwIfNotFound: true);
         m_Attack_Scope = m_Attack.FindAction("Scope", throwIfNotFound: true);
+        m_Attack_Defuse = m_Attack.FindAction("Defuse", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Slot1 = m_Inventory.FindAction("Slot1", throwIfNotFound: true);
@@ -832,6 +853,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Attack_Fire;
     private readonly InputAction m_Attack_Reload;
     private readonly InputAction m_Attack_Scope;
+    private readonly InputAction m_Attack_Defuse;
     public struct AttackActions
     {
         private @PlayerControls m_Wrapper;
@@ -839,6 +861,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Attack_Fire;
         public InputAction @Reload => m_Wrapper.m_Attack_Reload;
         public InputAction @Scope => m_Wrapper.m_Attack_Scope;
+        public InputAction @Defuse => m_Wrapper.m_Attack_Defuse;
         public InputActionMap Get() { return m_Wrapper.m_Attack; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -857,6 +880,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Scope.started += instance.OnScope;
             @Scope.performed += instance.OnScope;
             @Scope.canceled += instance.OnScope;
+            @Defuse.started += instance.OnDefuse;
+            @Defuse.performed += instance.OnDefuse;
+            @Defuse.canceled += instance.OnDefuse;
         }
 
         private void UnregisterCallbacks(IAttackActions instance)
@@ -870,6 +896,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Scope.started -= instance.OnScope;
             @Scope.performed -= instance.OnScope;
             @Scope.canceled -= instance.OnScope;
+            @Defuse.started -= instance.OnDefuse;
+            @Defuse.performed -= instance.OnDefuse;
+            @Defuse.canceled -= instance.OnDefuse;
         }
 
         public void RemoveCallbacks(IAttackActions instance)
@@ -1049,6 +1078,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnScope(InputAction.CallbackContext context);
+        void OnDefuse(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {

@@ -333,6 +333,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Defuse",
+                    "type": "Button",
+                    "id": "fc982b33-1dcd-4449-8fa3-f9addb9c615c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -366,6 +375,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Scope",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8798374e-de93-4501-a547-c990feac5487",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Defuse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -498,7 +518,7 @@
                 {
                     "name": "",
                     "id": "07d77568-1927-48f4-b110-41450fcec9ca",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

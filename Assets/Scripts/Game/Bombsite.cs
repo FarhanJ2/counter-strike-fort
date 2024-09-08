@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Bombsite : MonoBehaviour
 {
     public bool BombPlanted { get; set; }
@@ -11,7 +12,7 @@ public class Bombsite : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player =other.GetComponent<Player>();
+            Player player = other.GetComponent<Player>();
             player.InBombZone = true;
         }
     }
@@ -20,7 +21,7 @@ public class Bombsite : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player =other.GetComponent<Player>();
+            Player player = other.GetComponent<Player>();
             player.InBombZone = false;
         }
     }

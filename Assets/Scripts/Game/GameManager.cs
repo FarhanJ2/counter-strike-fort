@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FishNet.CodeGenerating;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -11,7 +12,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
 
     [AllowMutableSyncType] private SyncVar<Player[]> _players;
-    [AllowMutableSyncType] private SyncVar<bool> _c4Planted, _c4Exploded;
+    [AllowMutableSyncType] private SyncVar<bool> _c4Planted, _c4Exploded, _c4Defused;
     [AllowMutableSyncType] private SyncVar<int> _ctWins, _tWins;
     [AllowMutableSyncType] private SyncVar<int> _totalRounds;
     [AllowMutableSyncType] private SyncVar<int> _ctPlayersAlive, _tPlayersAlive;
@@ -21,8 +22,9 @@ public class GameManager : NetworkBehaviour
     
     public Player[] Players { get => _players.Value; private set => _players.Value = value; }
 
-    public bool C4Planted { get => _c4Planted.Value; private set => _c4Planted.Value = value; }
-    public bool C4Exploded { get => _c4Exploded.Value; private set => _c4Exploded.Value = value; }
+    public bool C4Planted { get => _c4Planted.Value; set => _c4Planted.Value = value; }
+    public bool C4Exploded { get => _c4Exploded.Value; set => _c4Exploded.Value = value; }
+    public bool C4Defused { get => _c4Defused.Value; set => _c4Defused.Value = value; }
     public int CtWins { get => _ctWins.Value; private set => _ctWins.Value = value; }
     public int TWins { get => _tWins.Value; private set => _tWins.Value = value; }
     public int TotalRounds { get => _totalRounds.Value; private set => _totalRounds.Value = value; }
@@ -35,7 +37,6 @@ public class GameManager : NetworkBehaviour
 
     public float freezeTime = 15f;
     public float roundTime = 10f;
-    public float bombTime = 40f;
     public float afterRoundEnd = 5f;
     
     private static event Action OnMajorEvent; 
@@ -69,6 +70,7 @@ public class GameManager : NetworkBehaviour
         TimerRunning = false;
         C4Planted = false;
         C4Exploded = false;
+        C4Defused = false;
     }
 
     // private void Start()
@@ -110,11 +112,19 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void CheckForRoundWin() // run on an event so everytime a player dies bomb planted explodes etc this checks not on update
     {
+        if (CtPlayersAlive == 0 && TPlayersAlive == 0 && !C4Planted) // draw the round if only one player is alive in the entire match
+        {
+            AudioManager.Instance.PlaySound(AudioManager.Sound.ROUND_DRAW);
+            EndRound();
+            return;
+        }
+        
         if (CtPlayersAlive == 0) // CT players are all dead
         {
             TWins++;
             AudioManager.Instance.PlaySound(AudioManager.Sound.T_WIN);
             EndRound(); // End round
+            return;
         }
 
         if (TPlayersAlive == 0) // T players are all dead
@@ -122,6 +132,7 @@ public class GameManager : NetworkBehaviour
             CtWins++;
             AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
             EndRound(); // End round
+            return;
         }
 
         if (C4Planted && C4Exploded) // Bomb planted and exploded
@@ -129,9 +140,26 @@ public class GameManager : NetworkBehaviour
             TWins++;
             AudioManager.Instance.PlaySound(AudioManager.Sound.T_WIN);
             EndRound(); // End round
+            return;
+        }
+
+        if (C4Planted && C4Defused)
+        {
+            CtWins++;
+            AudioManager.Instance.PlaySound(AudioManager.Sound.BOMB_DEF);
+            StartCoroutine(C4DefusedSound());
+            EndRound();
+            return;
         }
     }
 
+    IEnumerator C4DefusedSound()
+    {
+        AudioManager.Instance.PlaySound(AudioManager.Sound.BOMB_DEF);
+        yield return new WaitForSeconds(1.5f);
+        AudioManager.Instance.PlaySound(AudioManager.Sound.CT_WIN);
+    }
+    
     private bool endRoundRan = false;
     
     [ObserversRpc]
@@ -243,6 +271,11 @@ public class GameManager : NetworkBehaviour
 
     public string GetTimerDisplay()
     {
+        if (C4Planted)
+        {
+            return "C4 Planted";
+        }
+        
         int minutes = Mathf.FloorToInt(TimeRemaining / 60);
         int seconds = Mathf.FloorToInt(TimeRemaining % 60);
         return string.Format("{0:00}:{1:00}", minutes, seconds);

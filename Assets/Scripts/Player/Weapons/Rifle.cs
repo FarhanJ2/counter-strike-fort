@@ -7,7 +7,7 @@ public class Rifle : Weapon
 {
     private float _nextFireTime = 0f;
     
-    public override void Fire()
+    public override void Fire(PlayerBridge bridge)
     {
         throw new System.NotImplementedException();
     }

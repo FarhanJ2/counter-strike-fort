@@ -37,7 +37,7 @@ public abstract class Weapon : NetworkBehaviour
 
     protected bool isReloading = false;
 
-    public abstract void Fire();
+    public abstract void Fire(PlayerBridge bridge);
     public IEnumerator Reload()
     {
         if (currentAmmo < ammoCapacity)
