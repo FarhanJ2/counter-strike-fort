@@ -68,6 +68,9 @@ public class UIBuyMenu : NetworkBehaviour
             case 3:
                 weaponName = Weapon.WeaponName.AK47;
                 break;
+            case 4:
+                weaponName = Weapon.WeaponName.GLOCK_18;
+                break;
         }
     
         if (weaponName == Weapon.WeaponName.NONE) return;

@@ -78,6 +78,15 @@ public class C4 : Weapon
         _bombTimer = _timeToExplosion;
         _soundCoroutine = StartCoroutine(PlayBeepingSounds());
     }
+    
+    public void StopPlanting()
+    {
+        if (_plantingCoroutine != null)
+        {
+            StopCoroutine(_plantingCoroutine);
+            _bridge.playerMovement.canMove = true;
+        }
+    }
 
     IEnumerator PlayBeepingSounds()
     {
@@ -133,15 +142,15 @@ public class C4 : Weapon
             _bridge = other.GetComponent<PlayerBridge>();
             if (_bridge.player.PlayerTeam == Player.PlayerTeams.T)
             {
-                _bridge.InputManager.PlayerControls.Attack.Fire.started += _ => Fire(_bridge);
-                _bridge.InputManager.PlayerControls.Attack.Fire.canceled += _ =>
-                {
-                    if (_plantingCoroutine != null)
-                    {
-                        StopCoroutine(_plantingCoroutine);
-                        _bridge.playerMovement.canMove = true;
-                    }
-                };
+                // _bridge.InputManager.PlayerControls.Attack.Fire.started += _ => Fire(_bridge);
+                // _bridge.InputManager.PlayerControls.Attack.Fire.canceled += _ =>
+                // {
+                //     if (_plantingCoroutine != null)
+                //     {
+                //         StopCoroutine(_plantingCoroutine);
+                //         _bridge.playerMovement.canMove = true;
+                //     }
+                // };
                 _bridge.player.ownedWeapons.HasBomb = true;
                 _physicsCollider.enabled = false;
                 BombDown = false;

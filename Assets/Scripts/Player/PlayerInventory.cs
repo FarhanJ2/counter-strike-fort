@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInventory : NetworkBehaviour
 {
@@ -17,6 +18,8 @@ public class PlayerInventory : NetworkBehaviour
 
     [SerializeField] private LayerMask _pickupLayer;
     private float raycastDistance = 4f;
+    
+    private Action<InputAction.CallbackContext> _fireAction;
     
     // public Weapon.WeaponName CurrentWeaponHolding
     // {
@@ -122,6 +125,9 @@ public class PlayerInventory : NetworkBehaviour
     private void SetHoldingWeapon(int slot)
     {
         if (!IsOwner) return;
+
+        _currentWeaponHolding = Weapon.WeaponName.NONE;
+        _bridge.InputManager.PlayerControls.Attack.Fire.started -= _fireAction;
         
         foreach (GameObject w in _weapons)
         {
@@ -138,9 +144,17 @@ public class PlayerInventory : NetworkBehaviour
         switch (slot)
         {
             case 1:
-                
+                _currentWeaponHolding = _bridge.player.ownedWeapons.CurrentPrimary;
+                _weapons[2].SetActive(true);
+                _fireAction = ctx => OnFireWeapon(_weapons[2].GetComponent<Rifle>());
+                _bridge.InputManager.PlayerControls.Attack.Fire.started += _fireAction;
                 break;
             case 2:
+                _currentWeaponHolding = _bridge.player.ownedWeapons.CurrentSecondary;
+                _weapons[1].SetActive(true);
+                _fireAction = ctx => OnFireWeapon(_weapons[1].GetComponent<Pistol>());
+                _bridge.InputManager.PlayerControls.Attack.Fire.started += _fireAction;
+                break;
             case 3:
             case 4:
             case 5:
@@ -149,7 +163,18 @@ public class PlayerInventory : NetworkBehaviour
                 c4.GetComponentInChildren<MeshRenderer>().enabled = false;
                 c4.GetComponent<BoxCollider>().enabled = false;
                 _weapons[0].SetActive(true);
+                _fireAction = ctx => OnFireWeapon(c4);
+                _bridge.InputManager.PlayerControls.Attack.Fire.started += _fireAction;
+                _bridge.InputManager.PlayerControls.Attack.Fire.canceled += _ =>
+                {
+                    c4.StopPlanting();
+                };
                 break;
         }
+    }
+
+    private void OnFireWeapon(Weapon weapon)
+    {
+        weapon.Fire(_bridge);
     }
 }

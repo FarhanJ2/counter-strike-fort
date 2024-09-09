@@ -33,6 +33,7 @@ public abstract class Weapon : NetworkBehaviour
         [WeaponAttr(false, 0)] C4,
         [WeaponAttr(true, 2700)] AK47, 
         [WeaponAttr(false, 200)] USPS,
+        [WeaponAttr(false, 200)] GLOCK_18
     }
 
     protected bool isReloading = false;
