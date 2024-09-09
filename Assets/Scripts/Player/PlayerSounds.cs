@@ -101,9 +101,9 @@ public class PlayerSounds : MonoBehaviour
         }
     }
 
-    public void PlaySound(ConcreteFootsteps sound)
+    public void PlayTVo(T_VO vo)
     {
-        AudioClip clip = concreteSounds[(int)sound];
+        AudioClip clip = tVo[(int)vo];
         _source.PlayOneShot(clip);
     }
 

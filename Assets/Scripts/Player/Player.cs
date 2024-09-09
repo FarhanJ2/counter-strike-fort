@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.CodeGenerating;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Player : NetworkBehaviour
 {
+    [AllowMutableSyncType] private SyncVar<string> _playerName;
+    
     public PlayerTeams PlayerTeam { get; private set; }
-    public string PlayerName { get; private set; }
+    public string PlayerName { get => _playerName.Value; private set => _playerName.Value = value; }
     public int PlayerMoney { get; set; }
     public int PlayerKills { get; private set; }
     public int PlayerDeaths { get; private set; }

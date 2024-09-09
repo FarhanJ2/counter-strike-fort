@@ -107,6 +107,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Slide"",
+                    ""type"": ""Button"",
+                    ""id"": ""cbe5bd54-4883-4c4d-9fcf-d3e35d3440d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -274,6 +283,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Lean"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83ac7de0-9b31-456b-a437-10346806a093"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -603,6 +623,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Movement_LeanLeft = m_Movement.FindAction("LeanLeft", throwIfNotFound: true);
         m_Movement_LeanRight = m_Movement.FindAction("LeanRight", throwIfNotFound: true);
         m_Movement_Lean = m_Movement.FindAction("Lean", throwIfNotFound: true);
+        m_Movement_Slide = m_Movement.FindAction("Slide", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_MouseX = m_Camera.FindAction("MouseX", throwIfNotFound: true);
@@ -695,6 +716,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_LeanLeft;
     private readonly InputAction m_Movement_LeanRight;
     private readonly InputAction m_Movement_Lean;
+    private readonly InputAction m_Movement_Slide;
     public struct MovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -708,6 +730,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @LeanLeft => m_Wrapper.m_Movement_LeanLeft;
         public InputAction @LeanRight => m_Wrapper.m_Movement_LeanRight;
         public InputAction @Lean => m_Wrapper.m_Movement_Lean;
+        public InputAction @Slide => m_Wrapper.m_Movement_Slide;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -744,6 +767,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lean.started += instance.OnLean;
             @Lean.performed += instance.OnLean;
             @Lean.canceled += instance.OnLean;
+            @Slide.started += instance.OnSlide;
+            @Slide.performed += instance.OnSlide;
+            @Slide.canceled += instance.OnSlide;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -775,6 +801,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lean.started -= instance.OnLean;
             @Lean.performed -= instance.OnLean;
             @Lean.canceled -= instance.OnLean;
+            @Slide.started -= instance.OnSlide;
+            @Slide.performed -= instance.OnSlide;
+            @Slide.canceled -= instance.OnSlide;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -1067,6 +1096,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLeanLeft(InputAction.CallbackContext context);
         void OnLeanRight(InputAction.CallbackContext context);
         void OnLean(InputAction.CallbackContext context);
+        void OnSlide(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {

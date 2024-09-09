@@ -53,7 +53,8 @@ public class C4 : Weapon
         {
             StopCoroutine(_plantingCoroutine);
         }
-        
+
+        _bridge.playerSounds.PlayTVo(PlayerSounds.T_VO.PLANTING_02);
         _plantingCoroutine = StartCoroutine(PlantBomb(_bridge));
     }
 
@@ -84,7 +85,7 @@ public class C4 : Weapon
         while (!GameManager.Instance.C4Exploded)
         {
             PlaySound(C4Sounds.C4_BEEP_02);
-            float waitTime = Mathf.Clamp((_bombTimer / _timeToExplosion) + .1f, .1f, _timeToExplosion);
+            float waitTime = Mathf.Clamp(_bombTimer / _timeToExplosion, .1f, _timeToExplosion);
             Debug.Log(waitTime);
             yield return new WaitForSeconds(waitTime);
             if (_bombTimer <= 2f)
