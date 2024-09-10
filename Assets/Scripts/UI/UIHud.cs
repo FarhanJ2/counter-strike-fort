@@ -68,6 +68,6 @@ public class UIHud : NetworkBehaviour
             "CT: " + GameManager.Instance.CtPlayersAlive + "T: " + GameManager.Instance.TPlayersAlive;
 
         _roundTimerText.text = GameManager.Instance.GetTimerDisplay();
-        _xyVelocityText.text = "Velocity: " + _bridge.player.playerMovement.GetXZVelocity();
+        _xyVelocityText.text = "Velocity: " + _bridge.playerMovement.GetXZVelocity;
     }
 }

@@ -41,11 +41,10 @@ public class PlayerMovement : NetworkBehaviour
 
     private string _floorSurface;
     private bool _canPlayFootstep = true;
-    
-    public float GetXZVelocity
-    {
-        get { return new Vector2(_velocity.x, _velocity.z).magnitude; }
-    }
+
+    private Vector2 _speedVelocity;
+    public float GetXZVelocity => _speedVelocity.magnitude;
+
     public float GetSpeed
     {
         get { return speed; }
@@ -97,7 +96,7 @@ public class PlayerMovement : NetworkBehaviour
             float z = _bridge.InputManager.PlayerControls.Movement.Translation.ReadValue<float>();
 
             Vector3 move = transform.right * x + transform.forward * z;
-
+            
             if (isGrounded)
             {
                 if (_isSprinting)
@@ -125,6 +124,9 @@ public class PlayerMovement : NetworkBehaviour
 
             LadderLogic(move);
             HandleMovementSound(move);
+            
+            _speedVelocity.x = move.x * speed;
+            _speedVelocity.y = move.z * speed;
         }
     }
 
