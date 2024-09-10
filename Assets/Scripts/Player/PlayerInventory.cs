@@ -156,7 +156,9 @@ public class PlayerInventory : NetworkBehaviour
                 _bridge.InputManager.PlayerControls.Attack.Fire.started += _fireAction;
                 break;
             case 3:
+                break;
             case 4:
+                break;
             case 5:
                 _currentWeaponHolding = Weapon.WeaponName.C4;
                 C4 c4 = FindObjectOfType<C4>();
@@ -167,7 +169,7 @@ public class PlayerInventory : NetworkBehaviour
                 _bridge.InputManager.PlayerControls.Attack.Fire.started += _fireAction;
                 _bridge.InputManager.PlayerControls.Attack.Fire.canceled += _ =>
                 {
-                    c4.StopPlanting();
+                    c4.StopPlanting(_bridge);
                 };
                 break;
         }

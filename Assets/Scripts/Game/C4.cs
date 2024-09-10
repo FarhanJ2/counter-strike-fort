@@ -79,8 +79,10 @@ public class C4 : Weapon
         _soundCoroutine = StartCoroutine(PlayBeepingSounds());
     }
     
-    public void StopPlanting()
+    public void StopPlanting(PlayerBridge _bridge)
     {
+        if (!_bridge.player.ownedWeapons.HasBomb) return;
+        
         if (_plantingCoroutine != null)
         {
             StopCoroutine(_plantingCoroutine);
