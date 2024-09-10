@@ -9,13 +9,14 @@ public class UIHud : NetworkBehaviour
 {
     [SerializeField] private GameObject deathScreen;
     [SerializeField] private TMP_Text deathText;
-
+    
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private TMP_Text _defuseKitText;
     [SerializeField] private TMP_Text _moneyText;
     [SerializeField] private TMP_Text _winsText;
     [SerializeField] private TMP_Text _playersAliveText;
     [SerializeField] private TMP_Text _roundTimerText;
+    [SerializeField] private TMP_Text _xyVelocityText;
 
     [SerializeField] private PlayerBridge _bridge;
 
@@ -59,7 +60,6 @@ public class UIHud : NetworkBehaviour
         {
             _defuseKitText.text = "You have a kit";
         }
-
         _healthText.text = _bridge.player.playerHealth.ToString();
         _moneyText.text = "$" + _bridge.player.PlayerMoney;
 
@@ -68,5 +68,6 @@ public class UIHud : NetworkBehaviour
             "CT: " + GameManager.Instance.CtPlayersAlive + "T: " + GameManager.Instance.TPlayersAlive;
 
         _roundTimerText.text = GameManager.Instance.GetTimerDisplay();
+        _xyVelocityText.text = "Velocity: " + _bridge.player.playerMovement.GetXZVelocity();
     }
 }

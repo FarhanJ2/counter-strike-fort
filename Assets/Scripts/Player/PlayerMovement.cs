@@ -41,7 +41,11 @@ public class PlayerMovement : NetworkBehaviour
 
     private string _floorSurface;
     private bool _canPlayFootstep = true;
-
+    
+    public float GetXZVelocity
+    {
+        get { return new Vector2(_velocity.x, _velocity.z).magnitude; }
+    }
     public float GetSpeed
     {
         get { return speed; }
@@ -107,7 +111,7 @@ public class PlayerMovement : NetworkBehaviour
             }
             else
             {
-                speed = Mathf.Lerp(speed, oldSpeed * 0.1f, sprintChangingSpeed * Time.deltaTime);
+                speed = Mathf.Lerp(speed, oldSpeed * 1.1f, sprintChangingSpeed * Time.deltaTime);
             }
 
             controller.Move(move * speed * Time.deltaTime);
