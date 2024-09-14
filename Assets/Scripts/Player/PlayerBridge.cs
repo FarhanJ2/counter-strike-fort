@@ -6,15 +6,6 @@ using UnityEngine.Serialization;
 
 public class PlayerBridge : NetworkBehaviour
 {
-    // public override void OnStartClient()
-    // {
-    //     base.OnStartClient();
-    //     if (!base.IsOwner)
-    //     {
-    //         gameObject.GetComponent<PlayerBridge>().enabled = false;
-    //     }
-    // }
-
     // For all values that need to be accessed by EACH sub-set
     [Header("Player Files")] 
     public PlayerMovement playerMovement;

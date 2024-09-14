@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FishNet.Object;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class UIScoreboard : MonoBehaviour
+public class UIScoreboard : NetworkBehaviour
 {
     [SerializeField] private GameObject playerHolderPrefab;
     [SerializeField] private Image teamIcon;
@@ -13,10 +14,10 @@ public class UIScoreboard : MonoBehaviour
 
     [SerializeField] private Transform ctTeamContainer, tTeamContainer;
     
-    // instead of instantiating on player join just add empty fields for unfilled slots and then get from there
-    
     [SerializeField] private List<UIElementPlayerHolder> _ctSlots;
     [SerializeField] private List<UIElementPlayerHolder> _tSlots;
+    
+    public List<ScoreboardEntry> ScoreboardEntries { get; set; }
 
     private void Start()
     {
@@ -38,29 +39,6 @@ public class UIScoreboard : MonoBehaviour
             return;
         }
 
-        // for (int i = 0; i < maxPlayersPerTeam; i++)
-        // {
-        //     // CT Slots
-        //     GameObject ctSlotObj = Instantiate(playerHolderPrefab, ctTeamContainer);
-        //     UIElementPlayerHolder ctSlot = ctSlotObj.GetComponent<UIElementPlayerHolder>();
-        //     if (ctSlot == null)
-        //     {
-        //         Debug.LogError("Failed to get UIElementPlayerHolder component from CT slot prefab.");
-        //     }
-        //     ctSlot.ClearInfo();
-        //     _ctSlots.Add(ctSlot);
-        //
-        //     // T Slots
-        //     GameObject tSlotObj = Instantiate(playerHolderPrefab, tTeamContainer);
-        //     UIElementPlayerHolder tSlot = tSlotObj.GetComponent<UIElementPlayerHolder>();
-        //     if (tSlot == null)
-        //     {
-        //         Debug.LogError("Failed to get UIElementPlayerHolder component from T slot prefab.");
-        //     }
-        //     tSlot.ClearInfo();
-        //     _tSlots.Add(tSlot);
-        // }
-
         Debug.Log("Slots initialized successfully.");
     }
 
@@ -71,9 +49,10 @@ public class UIScoreboard : MonoBehaviour
             slot.ClearInfo();
         }
 
-        var scoreboardEntries = ScoreboardManager.Instance.GetScoreboard();
-
-        foreach (var entry in scoreboardEntries)
+        ScoreboardManager.Instance.GetScoreboardServer(this);
+        if (ScoreboardEntries == null) return;
+        
+        foreach (var entry in ScoreboardEntries)
         {
             UIElementPlayerHolder slot = GetAvailableSlot(entry.PlayerTeam);
             if (slot != null)

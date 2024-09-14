@@ -39,7 +39,7 @@ public class GameManager : NetworkBehaviour
     public float roundTime = 10f;
     public float afterRoundEnd = 5f;
     
-    private static event Action OnMajorEvent; 
+    private static event Action OnMajorEvent;
     
     /// <summary>
     /// Triggers an event when a significant game event occurs, such as a player death, bomb planted, or bomb exploded.

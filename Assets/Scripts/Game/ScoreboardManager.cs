@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using System.Linq;
+using FishNet.Object;
 using UnityEngine;
 
-public class ScoreboardManager : MonoBehaviour
+public class ScoreboardManager : NetworkBehaviour
 {
     public static ScoreboardManager Instance { get; private set; }
     
@@ -16,7 +17,6 @@ public class ScoreboardManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -59,8 +59,24 @@ public class ScoreboardManager : MonoBehaviour
         return player.PlayerKills / player.PlayerDeaths;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void GetScoreboardServer(UIScoreboard ui)
+    {
+        GetScoreboardObserver(ui);
+    }
+
+    [ObserversRpc]
+    private void GetScoreboardObserver(UIScoreboard ui)
+    {
+        ui.ScoreboardEntries = GetScoreboard();
+    }
+
+
     public List<ScoreboardEntry> GetScoreboard()
     {
+        Debug.Log("This is called");
+        Debug.Log(GameManager.Instance.Players);
+        
         return GameManager.Instance.Players
             .Select(p => new ScoreboardEntry
             {
